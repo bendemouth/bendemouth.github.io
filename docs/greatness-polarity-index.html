@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Ben DeMouth" />
+
+<meta name="date" content="2024-04-15" />
+
+<title>The Greatness Polarity Index</title>
+
+<script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">My Website</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="greatness-polarity-index.html">The Greatness Polarity Index</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">The Greatness Polarity Index</h1>
+<h4 class="author">Ben DeMouth</h4>
+<h4 class="date">2024-04-15</h4>
+
+</div>
+
+
+<p>It is often said that love and hate are two sides of the same coin.
+You can’t have one without the other. The yin to another’s yang</p>
+<p>Being a football fan can be the same way at times. We often say to
+ourselves, “our great [one side of the ball] is being wasted by a trash
+[other side of the ball].” To that, I posit that having a top-tier [one
+side of the ball] and an [other side of the ball] that you may find at
+the end of the driveway during spring cleaning season are two different
+forms of greatness.</p>
+<p>Being average is easy. By its very definition, most things are
+average. But greatness in all its forms takes something extraordinary.
+To be at the top requires hard work and a level of genius. To be at the
+bottom requires a cocktail of bad players, bad decisions, and an elite
+level of stubbornness. They are two poles of greatness separated from
+the equator of mediocrity.</p>
+<p>To that end I’ve created what I call the Greatness Polarity Index
+(GPI) and set out to find what teams have come closest to reaching the
+opposite poles of greatness while sharing a sideline. Who are our Robert
+Pearys, conquering the North Pole of superiority while looking across at
+their Roald Amundsen counterparts, trudging the trail of ineptitude?</p>
+<div id="the-greatness-polarity-index" class="section level2">
+<h2>The Greatness Polarity Index</h2>
+<p>The Greatness Polarity Index is based off of estimated points added,
+a metric that evaluates how a team performs relative to expectations.
+Both offenses and defenses are evaluated by this metric based on whether
+they score/allow more/fewer points than expected.</p>
+<p>I only have data for this going back 20 years, so if you’re expecting
+a team from the 90s to be on here, I’m sorry. And of course football has
+changed a lot over the last 20 years. So we’ll be adjusting GPI to
+reflect the era in which a particular team played, and the formula will
+look something like this:</p>
+<p><span class="math display">\[
+GPI = abs[(TeamOffEPA - SeasonAvgOffEPA) + (TeamDefEPA -
+SeasonAvgDefEPA)]
+\]</span></p>
+<p>We’re taking the absolute value of the sum of a teams differences
+from offensive and defensive EPA, so we should get a nice mix of good
+offenses with bad defenses and vice-versa. The offenses and defenses
+will be assigned a unit greatness polarity index (uGPI) for their
+component of overall GPI.</p>
+<p>Without further delay, here are your top-10 teams in GPI over the
+last 20 years.</p>
+<div id="texas-tech-red-raiders---316.13-gpi" class="section level3">
+<h3>10: 2016 Texas Tech Red Raiders - 316.13 GPI</h3>
+<p>Kicking off our list are the Patrick Mahomes &amp; Kliff Kingsbury
+led Red Raiders. This is your stereotypical Big 12 team of the 2010s and
+they led the country in plays per game, yards per game (463, which was
+100 yards better than the second best team. There was as big of a
+difference between Tech and the second best team as there was between #2
+and #34), and nearly every passing statistics, was top-5 in points per
+game (43.7), and Mahomes had more than 400 more passing yards on the
+season than the next closest passer (another entry on our list!),
+despite having fewer games played than anyone else in the top 5.</p>
+<p>The problem was that the defense allowed similar numbers to what the
+offense put up. They ranked dead last in points (43.5) and yards allowed
+(554.3) per game and were tied for second worst in the country for
+opponent yards per play (7.1).</p>
+<p>This squad finished 5-7 on the year, but gave us some memorable
+moments along the way.</p>
+<p>In week two, Arizona State’s Kalen Ballage tied the NCAA record for
+most touchdowns in a game by one player with eight. Week eight gave us
+the legendary <a
+href="https://en.wikipedia.org/wiki/2016_Oklahoma_vs._Texas_Tech_football_game">Mahomes
+vs Mayfield game</a> that finished with a final score of 66-59 in favor
+of the Sooners after breaking all kinds of offensive records while both
+teams put up 854 yards of total offense with Mahomes passing for 734
+yards. The low spot on the year came during week twelve when the Red
+Raiders lost 66-10 to an Iowa State team that finished 3-9 during Matt
+Campbell’s first season at the helm for the Cyclones.</p>
+<p>Tech finished with an offensive GPI of u162.71, and a defensive GPI
+of u153.42 (second worst of any unit in the last 20 years) to give us
+our grand total of 316.13.</p>
+</div>
+<div id="iowa-hawkeyes---328.15-gpi" class="section level3">
+<h3>9: 2022 Iowa Hawkeyes - 328.15 GPI</h3>
+<p>Next up on the list is the first appearance from the Iowa Hawkeyes.
+Unlike the offensive fireworks we saw from Texas Tech to start the list,
+the Hawkeyes were anchored by a stout defense that was second in the
+nation in points (13.3), yards allowed per game (270.8) and rushing
+yards per attempt (2.8), and led the nation in yards per play
+allowed(4.0). The Iowa defense was anchored by Butkus Award winner Jack
+Campbell and first-round draft pick Lukas Van Ness.</p>
+<p>For as good as Iowa was defensively, the offense looked as though
+they were facing their defensive brethren week in and week out when they
+trotted out the 123rd ranked scoring offense at 17.7 points per game.
+Quarterback Spencer Petras completed just under 56% of his passes for
+1725 yards and just 5 touchdowns for the season. There wasn’t much of a
+reprieve in the run game as the team averaged just 2.9 yards per carry
+and 94.8 yards per game. The team ultimately finished third from last in
+the country at just 4.2 yards per play.</p>
+<p>The team opened the season with a beautiful 7-3 win over eventual FCS
+national champion South Dakota State, posting a box score that looks
+more like a baseball frame. The teams traded field goals in the first
+and second quarters, before Iowa got safeties in the third and fourth
+quarters to invent the “Iowa Touchdown”. The Hawkeyes and the
+Jackrabbits combined for 936 yards on 21 punts, and Iowa’s Tory Taylor
+placed SDSU inside their own 20 on 7 of his 10 punts.</p>
+<p>The other baseball score game on the season came on October 8 against
+Illinois, where The Illini took down Iowa by a final score of 9-6.</p>
+<p>Iowa finished the season 8-5, but just 5-4 in the Big Ten West, good
+enough for a three-way tie for second in the division.</p>
+<p>The splits for the sides of the ball were -160 uGPI for the offense
+and -167 uGPI for the defense.</p>
+</div>
+<div id="boston-college-eagles---336.23-gpi" class="section level3">
+<h3>8: 2015 Boston College Eagles - 336.23 GPI</h3>
+<p>Coming in at number eight on the GPI list are the 2015 Boston College
+Eagles, another team led by a stout defense. The Eagles’ defense was
+fourth in the nation in scoring defense, allowing just 15.3 points per
+game, only 0.2 points per game behind Ohio State and eventual national
+champion Alabama. They also led the nation in rushing yards per attempt
+(2.4) and yards per play (4.1).</p>
+<p>On the opposite side of the ball, the Eagles posted a bottom-10
+offense in scoring (17.2), completion percentage (44.4), and yards per
+play (4.4). If you like smash-mouth football, you may have enjoyed bits
+of this offense where they ranked 74th in rushing yards per game, but
+they ranked 95th in the country in rushing yards per attempt at 3.9
+yards per carry.</p>
+<p>The Eagles started the season hot with a 3-1 record and wins for
+Maine, Howard, and Northern Illinois, but they would go on to post a
+winless record in ACC play to finish 3-9 on the year.</p>
+<p>In honesty, this team could be a lot higher on our list if not for
+the week two game against Howard, where the Eagles won 76-0 in a game
+where the coaches agreed to shorten the second half quarters to 10
+minutes instead of 15.</p>
+<p>October 10th was probably the biggest missed opportunity on the year,
+when BC fell to Wake Forest 3-0, despite out gaining the Deacs by 128
+yards and holding them to just 5 first downs on the afternoon. But Wake
+knocked through a field goal after an Eagles turnover for the lone score
+of the ball game.</p>
+<p>The Eagles offense posted a -146.67 uGPI and the defense stifled
+opponents for a -189.26 uGPI, for our grand total of 336.23.</p>
+</div>
+<div id="oregon-ducks---336.62-gpi" class="section level3">
+<h3>7: 2014 Oregon Ducks - 336.62 GPI</h3>
+<p>The seventh entry to our list brings us the most successful team to
+crack the top-10. Oregon was led by Heisman trophy winning quarterback
+Marcus Mariota before going on to be national runners-up, losing in the
+inaugural CFP national championship game to to Ohio State.</p>
+<p>Unlike the other entries on our list, the Ducks were actually at
+least decent on both sides of the ball. The defense boasted the 31st
+ranked scoring defense in the country at 23.6 points allowed per game,
+in a unit that was anchored by Arik Armstead and DeForest Buckner on
+either end of the defensive line. In fact, the 2014 Oregon defense is
+the closest to average unit we have anywhere on the list at just 45.14
+uGPI.</p>
+<p>The Ducks crack into our top-10 because the offense was just that
+explosive. Offensive coordinator Scott Frost engineered the second-best
+offensive uGPI of the last 20 years at 291.67. Mariota led the team
+passing for 4,454 yards on 42 touchdowns to just 4 interceptions while
+coming in second in rushing on the team with 770 yards and 15 touchdowns
+on the ground, and a 26-yard receiving touchdown to boot. The team
+averaged 45.4 points per game, 547 yards of total offense and 7.3 yards
+per play, all top-4 in the country for the season.</p>
+<p>Oregon hit a speed bump on October 2nd when they lost to Arizona
+31-24, but they would exact revenge in the Pac-12 title game where they
+destroyed the Wildcats 51-13.</p>
+<p>The only times the Ducks were held under 38 points on the season were
+the two games they lost. Otherwise, they scored at least 42 points in
+ten of twelve games en route to a final record of 13-2.</p>
+</div>
+<div id="usc-trojans---337.14-gpi" class="section level3">
+<h3>6: 2022 USC Trojans - 337.14 GPI</h3>
+<p>Our next entry to the list gives us another Pac-12 high powered
+offense led by a Heisman winning quarterback. This time the USC Trojans
+led by Caleb Williams.</p>
+<p>In the Trojans’ first season under head man Lincoln Riley they
+improved their record from 4-8 the previous season to go 11-3, including
+appearances in the Pac-12 championship game and the Cotton Bowl.</p>
+<p>The offense was top-3 in points per game (41.4), passing yards per
+game (335.4), yards per game (506.6), and yards per play (7.2). This
+unit improved a lot from the previous year, thanks in large part to the
+transfer portal that brought them Caleb Williams, Mario Williams, and
+Jordan Addison, adding to a passing game that already featured Tajh
+Washington.</p>
+<p>Defensively, however, the Trojans struggled to stop opponents,
+ranking 94th in scoring defense (29.2) and 119th in yards per play
+(6.5). This unit had good pieces, including Mekhi Blackmon and Tuli
+Tuipulotu, but Alex Grinch as a coordinator is a lot to overcome.</p>
+<p>USC lost to conference rival Utah twice on the year, including a
+47-24 loss in the conference championship game, before losing to Tulane
+in the Cotton Bowl in a 46-45 thriller. Outside of that, the Trojans won
+their other 11 games and post 40+ points in 10 of their 13 games.</p>
+<p>The offense posted a uGPI of 236.94, while the defense had a uGPI of
+100.2 for our total of 337.14.</p>
+</div>
+<div id="lsu-tigers---339.46-gpi" class="section level3">
+<h3>5: 2023 LSU Tigers - 339.46 GPI</h3>
+<p>I hope you aren’t sick of Heisman winning quarterbacks being
+squandered by lackluster defenses, because we’ve got another team that
+fits that bill to start our top-5.</p>
+<p>LSU’s offense was a juggernaut all season long, leading the nation in
+scoring (45.5), yards (543.5) and yards per play (8.4, a whopping 0.6
+yards better than second place Oregon at 7.8). They were led by Heisman
+winner Jayden Daniels throwing the ball to an outstanding receiving
+corps that featured Malik Nabers, Brian Thomas, and Kyren Lacey. The
+uGPI for the offense came in at 237.86 which was good enough for the
+tenth best offense of the last 20 years.</p>
+<p>Defensively, the Tigers were middling. I wouldn’t describe them as
+porous, but they weren’t quite average either. They ranked 82nd in
+scoring defense at 28 points allowed and 108th in yards per play, tying
+with teams like UConn, UTEP, and Georgia Southern. Their defensive uGPI
+came in at 101.6.</p>
+<p>LSU handled business against lesser opponents, but struggled against
+higher tier foes going just 1-4 against ranked teams. They finished the
+season 10-3 including a ReliaQuest Bowl win over Wisconsin.</p>
+</div>
+<div id="louisiana-tech-bulldogs---341.23-gpi" class="section level3">
+<h3>4: 2016 Louisiana Tech Bulldogs - 341.23 GPI</h3>
+<p>Staying in the bayou we have our lone G5 program coming in at number
+four. The Bulldogs were led by Skip Holtz in his fourth year as the
+leader of the program.</p>
+<p>LaTech is another offensive power on our list where they were second
+in the nation in scoring (44.3), passing yards (363.4), and yards per
+play (7.6). The gunslinger for the bulldogs was senior Ryan Higgins who
+posted more than 4600 passing yards with 41 touchdowns on just 8
+picks.</p>
+<p>The problem came when the Bulldogs ran into the only teams to best
+them in the aforementioned offensive categories. Louisiana Tech
+participated in the only game between two members of this list when they
+faced off with Texas Tech on September 17. The Red Raiders got the best
+of that match up, taking down the Bulldogs in a 59-45 barn burner. This
+game saw 1,238 yards of total offense and 14 total touchdowns between
+the two teams.</p>
+<p>The other team that beat them on a few offensive statistical
+categories was conference foe Western Kentucky who they faced in the
+conference championship game. The Hilltoppers won that game and C-USA on
+that day 58-44. That afternoon saw 1,163 yards of total offense and 12
+total touchdowns between the two squads, including a pick-six from
+Louisiana Tech’s L’Jarius Snead.</p>
+<p>Tech would finish the year 9-5 and 6-2 in conference with an
+offensive uGPI of 229.24 (15th best in the last 20 years) and a
+defensive uGPI of 112.0.</p>
+</div>
+<div id="iowa-hawkeyes---344.91-gpi" class="section level3">
+<h3>3: 2023 Iowa Hawkeyes - 344.91 GPI</h3>
+<p>Welcome back to Ferentz’s! You are our bronze medalists in the
+Olympics of polar greatness. You were not satisfied with 9th place in
+2022, so you built both sides even greater the following year and for
+that I commend you.</p>
+<p>Many Iowa fans (read: me) went into the season optimistic, thinking
+that the offense couldn’t possibly be more abysmal than in 2022.
+Somehow, though, Brian Ferentz accomplished that impossible feat,
+dragging the men down into the realm of which he is king: Dante’s eighth
+circle of Hell, the circle of fraudulence. Dante tells us in the
+<em>Divine Comedy</em> that Ulysses’ love for his father or for his son
+couldn’t overcome his desire for the vices of men. The story of Ulysses
+is that of the Ferentz’s as well. No matter the head coach father’s love
+for his offensive coordinator son, they could not together overcome
+their vice of punts. Many coaches on this list avoid punts in the way
+most people avoid cocaine. But the Ferentz’s are the Escobars of punts.
+Distributing the drug to the state, getting us hooked on it to the point
+Iowan’s adopt the mantra of “<a
+href="https://www.raygunsite.com/products/punting-is-winning-gold">punting
+is winning</a>.”</p>
+<p>And like the white powder, the punts were fun. Aussie Tory Taylor’s
+punting yardage would have placed him 3rd on the passing yardage list
+for the season, en route to being a unanimous first-team all-American
+and Ray Guy award winner.</p>
+<p>Iowa’s incredible defense paired with an equally but differently
+incredible offense set the Las Vegas record for the four lowest O/Us in
+history, with the season finally against Nebraska coming in at 24.5.</p>
+<p>But who am I to question the all-time greats? Did Brian Ferentz reach
+his 325 point goal on the season? No. But the Hawkeyes went 10-4 on the
+season with a Big Ten championship game appearance.</p>
+<p>My father once told me, “never argue with idiots. They’ll drag you
+down to their level and beat you with experience.” The Ferentz’s dragged
+nearly everyone down into their abode in the eighth circle of Hell and
+beat them on home turf and I can’t argue with that.</p>
+</div>
+<div id="texas-tech-red-raiders---412.90-gpi" class="section level3">
+<h3>2: 2015 Texas Tech Red Raiders - 412.90 GPI</h3>
+<p>Iowa is not our only back-to-back teams to appear on our list. For
+the other honorees, we welcome back Patrick Mahomes, Kliff Kingsbury,
+and the Texas Tech Red Raiders of 2015.</p>
+<p>Led by a sophomore Patrick Mahomes, Tech finished the season second
+in the nation in points per game (45.1), passing yards per game (388.2),
+and total offense per game (579.5). All these numbers only managed to
+get them the 36th ranked offense of the last 20 years with a uGPI of
+181.27.</p>
+<p>This team gets their big boost in GPI from their defense that ended
+the year with a uGPI of 231.63. The Raiders defense allowed the fourth
+most points per game (43.6), the second most yards per game (547.7), and
+the seventh most yards per play (6.9 (nice)).</p>
+<p>The Raiders finished the season 7-6, which is respectable after
+facing 4 teams in the top-17 in the country.</p>
+</div>
+<div id="oklahoma-sooners---441.08-gpi" class="section level3">
+<h3>1: 2018 Oklahoma Sooners - 441.08 GPI</h3>
+<p>The journalist Tom Junod once wrote that, “gluttony is harder than it
+looks. It’s listed as a sin, as something you give in to, when really
+its a skill, requiring not just hunger but resilience.” The 2018
+Oklahoma Sooners are not a sinful football team, but a skilled and
+resilient offensive machine intent on racking up as many points as
+possible in a 60-minute football game.</p>
+<p>This machine boasted talents like Kyler Murray, CeeDee Lamb,
+Hollywood Brown, Charleston Rambo, and Trey Sermon, anchored by Creed
+Humphrey in the center of the line. Their firepower led the nation in
+points per game (48.4), yards per game (570.7, 35 yards better than the
+second best team), and yards per play (8.7). In fact, the 2018 Oklahoma
+offense ranks as the best unit of the last 20 years, coming in with a
+uGPI of 293.20</p>
+<p>Defensively the Sooners fell apart to allow more passing yards per
+game (294) than any other team in the country, in addition to being 17th
+worst in total yards allowed per game (453.8) and 101st in the country
+in scoring defense (33.3 points per game allowed). This netted them a
+uGPI of 147.88, good for the 27th lowest rated defense of the last 20
+years.</p>
+<p>The Sooners are one of our most successful teams on the list,
+however, winning the Big 12 and appearing in the College Football
+playoff semifinals.</p>
+<p>But I don’t find that surprising given my original assertion that
+these are two different sides of greatness. Climbing Mount Everest and
+reaching the bottom of the Mariana Trench are both incredible feats of
+human achievement. When a team comes near to doing both we should not be
+shocked when they are great in other areas as well. I applaud and
+congratulate the 2018 Sooners team on finding our two poles of
+excellence.</p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
