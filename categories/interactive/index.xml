@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>College Football on Ben DeMouth</title>
-    <link>/categories/college-football/</link>
-    <description>Recent content in College Football on Ben DeMouth</description>
+    <title>Interactive on Ben DeMouth</title>
+    <link>/categories/interactive/</link>
+    <description>Recent content in Interactive on Ben DeMouth</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Mon, 15 Apr 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="/categories/college-football/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/categories/interactive/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>All Teams GPI</title>
       <link>/2024/04/15/all-teams-gpi/</link>
       <pubDate>Mon, 15 Apr 2024 00:00:00 +0000</pubDate>
       <guid>/2024/04/15/all-teams-gpi/</guid>
       <description>library(plotly)&#xD;## Loading required package: ggplot2&#xD;## ## Attaching package: &#39;plotly&#39;&#xD;## The following object is masked from &#39;package:ggplot2&#39;:&#xD;## ## last_plot&#xD;## The following object is masked from &#39;package:stats&#39;:&#xD;## ## filter&#xD;## The following object is masked from &#39;package:graphics&#39;:&#xD;## ## layout&#xD;library(readr)&#xD;gpidata &amp;lt;- read_csv(&amp;quot;C:\\Users\\bende\\Desktop\\bendemouth\\gpidata.csv&amp;quot;)&#xD;## New names:&#xD;## • `` -&amp;gt; `...1`&#xD;## Rows: 2500 Columns: 27&#xD;## ── Column specification ────────────────────────────────────────────────────────&#xD;## Delimiter: &amp;quot;,&amp;quot;&#xD;## chr (2): conference, team&#xD;## dbl (25): .</description>
-    </item>
-    <item>
-      <title>The Greatness Polarity Index</title>
-      <link>/2024/04/15/the-greatness-polarity-index/</link>
-      <pubDate>Mon, 15 Apr 2024 00:00:00 +0000</pubDate>
-      <guid>/2024/04/15/the-greatness-polarity-index/</guid>
-      <description>It is often said that love and hate are two sides of the same coin. You can&amp;rsquo;t have one without the other. The yin to another&amp;rsquo;s yang.&#xA;Being a football fan can be the same way at times. We often say to ourselves, &amp;ldquo;our great [one side of the ball] is being wasted by a trash [other side of the ball].&amp;rdquo; To that, I posit that having a top-tier [one side of the ball] and an [other side of the ball] that you may find at the end of the driveway during spring cleaning season are two different forms of greatness.</description>
     </item>
   </channel>
 </rss>
