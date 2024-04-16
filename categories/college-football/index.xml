@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>College Football on Ben DeMouth</title>
-    <link>//localhost:4321/categories/college-football/</link>
+    <link>/categories/college-football/</link>
     <description>Recent content in College Football on Ben DeMouth</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Mon, 15 Apr 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="//localhost:4321/categories/college-football/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/categories/college-football/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>The Greatness Polarity Index</title>
-      <link>//localhost:4321/2024/04/15/the-greatness-polarity-index/</link>
+      <link>/2024/04/15/the-greatness-polarity-index/</link>
       <pubDate>Mon, 15 Apr 2024 00:00:00 +0000</pubDate>
-      <guid>//localhost:4321/2024/04/15/the-greatness-polarity-index/</guid>
+      <guid>/2024/04/15/the-greatness-polarity-index/</guid>
       <description>It is often said that love and hate are two sides of the same coin. You can&amp;rsquo;t have one without the other. The yin to another&amp;rsquo;s yang.&#xA;Being a football fan can be the same way at times. We often say to ourselves, &amp;ldquo;our great [one side of the ball] is being wasted by a trash [other side of the ball].&amp;rdquo; To that, I posit that having a top-tier [one side of the ball] and an [other side of the ball] that you may find at the end of the driveway during spring cleaning season are two different forms of greatness.</description>
     </item>
   </channel>
