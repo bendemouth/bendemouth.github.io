@@ -9,6 +9,13 @@
     <lastBuildDate>Mon, 15 Apr 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>All Team&#39;s GPI</title>
+      <link>/2024/04/15/all-teams-gpi/</link>
+      <pubDate>Mon, 15 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>/2024/04/15/all-teams-gpi/</guid>
+      <description>## Loading required package: ggplot2&#xD;## ## Attaching package: &#39;plotly&#39;&#xD;## The following object is masked from &#39;package:ggplot2&#39;:&#xD;## ## last_plot&#xD;## The following object is masked from &#39;package:stats&#39;:&#xD;## ## filter&#xD;## The following object is masked from &#39;package:graphics&#39;:&#xD;## ## layout&#xD;## New names:&#xD;## Rows: 2500 Columns: 27&#xD;## ── Column specification&#xD;## ──────────────────────────────────────────────────────── Delimiter: &amp;quot;,&amp;quot; chr&#xD;## (2): conference, team dbl (25): ...1, season, season_off_avg, season_def_avg,&#xD;## off_overall, off_pas.</description>
+    </item>
+    <item>
       <title>The Greatness Polarity Index</title>
       <link>/2024/04/15/the-greatness-polarity-index/</link>
       <pubDate>Mon, 15 Apr 2024 00:00:00 +0000</pubDate>
