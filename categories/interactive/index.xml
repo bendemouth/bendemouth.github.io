@@ -13,7 +13,7 @@
       <link>/2024/04/15/all-teams-gpi/</link>
       <pubDate>Mon, 15 Apr 2024 00:00:00 +0000</pubDate>
       <guid>/2024/04/15/all-teams-gpi/</guid>
-      <description>&#xD;I recently wrote an article on the top-10 teams in a stat I invented called the Greatness Polarity Index. If you were wondering how your team stacked up, check out this interactive graph below.&#xA;gpigraph&amp;lt;- plot_ly(data = gpidata, x= ~off_gpi, y= ~def_gpi, text = ~paste(season, team))&#xD;gpigraph&#xD;</description>
+      <description>library(plotly)&#xD;library(readr)&#xD;gpidata &amp;lt;- read_csv(&amp;quot;C:\\Users\\bende\\Desktop\\bendemouth\\gpidata.csv&amp;quot;)&#xD;I recently wrote an article on the top-10 teams in a stat I invented called the Greatness Polarity Index. If you were wondering how your team stacked up, check out this interactive graph below.&#xA;gpigraph&amp;lt;- plot_ly(data = gpidata, x= ~off_gpi, y= ~def_gpi, text = ~paste(season, team))&#xD;gpigraph&#xD;</description>
     </item>
   </channel>
 </rss>
