@@ -6,8 +6,15 @@
     <description>Recent content in R on Ben DeMouth</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Mon, 15 Apr 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 16 Apr 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>All Team&#39;s GPI</title>
+      <link>/2024/04/16/all-team-s-gpi/</link>
+      <pubDate>Tue, 16 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>/2024/04/16/all-team-s-gpi/</guid>
+      <description>I recently wrote an article on the top-10 teams in a stat I invented called the Greatness Polarity Index. If you were wondering how your team stacked up, check out this interactive graph below.</description>
+    </item>
     <item>
       <title>The Greatness Polarity Index</title>
       <link>/2024/04/15/the-greatness-polarity-index/</link>
