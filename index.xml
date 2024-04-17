@@ -2,38 +2,38 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Ben DeMouth</title>
-    <link>/</link>
+    <link>//localhost:4321/</link>
     <description>Recent content on Ben DeMouth</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Tue, 16 Apr 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="//localhost:4321/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>All Team&#39;s GPI</title>
-      <link>/2024/04/16/all-team-s-gpi/</link>
+      <link>//localhost:4321/2024/04/16/all-team-s-gpi/</link>
       <pubDate>Tue, 16 Apr 2024 00:00:00 +0000</pubDate>
-      <guid>/2024/04/16/all-team-s-gpi/</guid>
+      <guid>//localhost:4321/2024/04/16/all-team-s-gpi/</guid>
       <description>I recently wrote an article on the top-10 teams in a stat I invented called the Greatness Polarity Index. If you were wondering how your team stacked up, check out this interactive graph below.</description>
     </item>
     <item>
       <title>The Greatness Polarity Index</title>
-      <link>/2024/04/15/the-greatness-polarity-index/</link>
+      <link>//localhost:4321/2024/04/15/the-greatness-polarity-index/</link>
       <pubDate>Mon, 15 Apr 2024 00:00:00 +0000</pubDate>
-      <guid>/2024/04/15/the-greatness-polarity-index/</guid>
+      <guid>//localhost:4321/2024/04/15/the-greatness-polarity-index/</guid>
       <description>It is often said that love and hate are two sides of the same coin. You can&amp;rsquo;t have one without the other. The yin to another&amp;rsquo;s yang.&#xA;Being a football fan can be the same way at times. We often say to ourselves, &amp;ldquo;our great [one side of the ball] is being wasted by a trash [other side of the ball].&amp;rdquo; To that, I posit that having a top-tier [one side of the ball] and an [other side of the ball] that you may find at the end of the driveway during spring cleaning season are two different forms of greatness.</description>
     </item>
     <item>
       <title>Hello R Markdown</title>
-      <link>/2020/12/01/hello-r-markdown/</link>
+      <link>//localhost:4321/2020/12/01/hello-r-markdown/</link>
       <pubDate>Tue, 01 Dec 2020 21:13:14 -0500</pubDate>
-      <guid>/2020/12/01/hello-r-markdown/</guid>
+      <guid>//localhost:4321/2020/12/01/hello-r-markdown/</guid>
       <description>R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.&#xA;You can embed an R code chunk like this:&#xA;summary(cars)&#xD;## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.</description>
     </item>
     <item>
       <title>About</title>
-      <link>/about/</link>
+      <link>//localhost:4321/about/</link>
       <pubDate>Thu, 05 May 2016 21:48:51 -0700</pubDate>
-      <guid>/about/</guid>
+      <guid>//localhost:4321/about/</guid>
       <description>I started this project after getting laid off from a job and hoping to find a new career path. I&amp;rsquo;ve always been an avid sports fan and have been particularly interested in the strange parts of sports - the parts where the best athletes in the world look just like you and me. So I set out to see if I could quantify the strangest parts of sports. I hope you&amp;rsquo;ll join me on this journey.</description>
     </item>
   </channel>
