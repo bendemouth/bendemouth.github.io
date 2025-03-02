@@ -1,27 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://bendemouth.github.io/posts/welcome/index.html</loc>
-    <lastmod>2025-03-02T00:54:02.744Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bendemouth.github.io/posts/post-with-code/index.html</loc>
-    <lastmod>2025-03-02T00:54:02.743Z</lastmod>
+    <loc>https://bendemouth.github.io/posts/statsmodel-library/statsmodel-library.html</loc>
+    <lastmod>2025-03-02T01:22:39.434Z</lastmod>
   </url>
   <url>
     <loc>https://bendemouth.github.io/index.html</loc>
-    <lastmod>2025-03-02T00:54:02.739Z</lastmod>
+    <lastmod>2025-03-02T01:22:39.429Z</lastmod>
   </url>
   <url>
     <loc>https://bendemouth.github.io/about.html</loc>
-    <lastmod>2025-03-02T00:54:02.739Z</lastmod>
+    <lastmod>2025-03-02T01:22:39.428Z</lastmod>
   </url>
   <url>
     <loc>https://bendemouth.github.io/posts/a-look-at-the-thunder-defense/a-look-at-the-thunder-defense.html</loc>
-    <lastmod>2025-03-02T01:05:05.686Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bendemouth.github.io/posts/statsmodel-library/statsmodel-library.html</loc>
-    <lastmod>2025-03-02T01:06:15.845Z</lastmod>
+    <lastmod>2025-03-02T01:25:14.958Z</lastmod>
   </url>
 </urlset>

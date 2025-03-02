@@ -1,24 +1,24 @@
 [
   {
-    "objectID": "posts/welcome/index.html",
-    "href": "posts/welcome/index.html",
-    "title": "Welcome To My Blog",
+    "objectID": "posts/statsmodel-library/statsmodel-library.html",
+    "href": "posts/statsmodel-library/statsmodel-library.html",
+    "title": "The statsmodel Python Library",
     "section": "",
-    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
+    "text": "When thinking about a data science project, one of the first decisions I find myself having to make is which language I want to do the project with. My first two choices are generally R or Python. Both languages have the capabilities to do high level data science work, but each has its pros and cons as well."
   },
   {
-    "objectID": "posts/post-with-code/index.html",
-    "href": "posts/post-with-code/index.html",
-    "title": "Post With Code",
-    "section": "",
-    "text": "This is a post with executable code."
+    "objectID": "posts/statsmodel-library/statsmodel-library.html#python",
+    "href": "posts/statsmodel-library/statsmodel-library.html#python",
+    "title": "The statsmodel Python Library",
+    "section": "Python",
+    "text": "Python\nPython is often one of the first languages a new programmer learns. Its syntax is intuitive and the language has become quite popular over recent years, in part because of the (community of open source libraries) that are easy to import to a script.\nA drawback to Python, however, is that it does not come built in with data frame capabilities and requires a third-party library (Pandas being the most popular) to structure data in a way that is easier to work with. You can structure data in lists, arrays, and dictionaries, but it requires a fair amount of code to get the data structured in a way you can work with it.\nFor how intuitive most of the language’s syntax is, visualizations are not the easiest to create either. Matplotlib is a popular library to create visualizations, but it is not as straightforward as some of the packages or built in capabilities available in R."
   },
   {
     "objectID": "index.html",
     "href": "index.html",
     "title": "bendemouth.github.io",
     "section": "",
-    "text": "Post With Code\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nFeb 1, 2025\n\n\nHarlow Malloc\n\n\n\n\n\n\n\n\n\n\n\n\nThe statsmodel Python Library\n\n\n\n\n\n\nPython\n\n\nR\n\n\n\nComparing and contrasting the statsmodel library against standard R Language\n\n\n\n\n\nFeb 1, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nJan 29, 2025\n\n\nTristan O’Malley\n\n\n\n\n\n\n\n\n\n\n\n\nA Look at the Thunder Defense\n\n\n\n\n\n\nNBA\n\n\n\nLooking at what makes the OKC Thunder successful on defenese\n\n\n\n\n\nFeb 13, 2024\n\n\n\n\n\n\nNo matching items"
+    "text": "The statsmodel Python Library\n\n\n\n\n\n\nPython\n\n\nR\n\n\n\nComparing and contrasting the statsmodel library against standard R Language\n\n\n\n\n\nFeb 1, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nA Look at the Thunder Defense\n\n\n\n\n\n\nNBA\n\n\nSports Analytics\n\n\n\nLooking at what makes the OKC Thunder successful on defenese\n\n\n\n\n\nFeb 13, 2024\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
@@ -54,19 +54,5 @@
     "title": "A Look at the Thunder Defense",
     "section": "Conclusion",
     "text": "Conclusion\nOklahoma City are bucking the trend of the rest of the NBA right now - focusing in on defense while the rest of the league is trying to optimize their offenses.\nThe Thunder cause mayhem for teams just trying to get into their offense. If their opponents are fortunate enough to get a shot off, very rarely is the look what would normall be considered good.\nThis team just plain hustles, and I am grateful that we have the opportunity to more deeply appreciate their greatness. In times gone by, these statistics are things that coaches would harp about, but they fell into the category of “intangibles that don’t show up in the box score”. Today, they do show up. Not just in boxscores, but in the win/loss columns and this effort has the Thunder in prime position to make a run at an NBA championship."
-  },
-  {
-    "objectID": "posts/statsmodel-library/statsmodel-library.html",
-    "href": "posts/statsmodel-library/statsmodel-library.html",
-    "title": "The statsmodel Python Library",
-    "section": "",
-    "text": "When thinking about a data science project, one of the first decisions I find myself having to make is which language I want to do the project with. My first two choices are generally R or Python. Both languages have the capabilities to do high level data science work, but each has its pros and cons as well."
-  },
-  {
-    "objectID": "posts/statsmodel-library/statsmodel-library.html#python",
-    "href": "posts/statsmodel-library/statsmodel-library.html#python",
-    "title": "The statsmodel Python Library",
-    "section": "Python",
-    "text": "Python\nPython is often one of the first languages a new programmer learns. Its syntax is intuitive and the language has become quite popular over recent years, in part because of the (community of open source libraries) that are easy to import to a script.\nA drawback to Python, however, is that it does not come built in with data frame capabilities and requires a third-party library (Pandas being the most popular) to structure data in a way that is easier to work with. You can structure data in lists, arrays, and dictionaries, but it requires a fair amount of code to get the data structured in a way you can work with it.\nFor how intuitive most of the language’s syntax is, visualizations are not the easiest to create either. Matplotlib is a popular library to create visualizations, but it is not as straightforward as some of the packages or built in capabilities available in R."
   }
 ]
