@@ -1,0 +1,20 @@
+{
+  "about.qmd": {
+    "about.html": "3a1a96b1"
+  },
+  "index.qmd": {
+    "index.html": "f7bba6b3"
+  },
+  "posts/a-look-at-the-thunder-defense/a-look-at-the-thunder-defense.ipynb": {
+    "a-look-at-the-thunder-defense.html": "f5b359f0"
+  },
+  "posts/post-with-code/index.qmd": {
+    "index.html": "07a0ee15"
+  },
+  "posts/statsmodel-library/statsmodel-library.ipynb": {
+    "statsmodel-library.html": "d7864635"
+  },
+  "posts/welcome/index.qmd": {
+    "index.html": "d5e80bc6"
+  }
+}
