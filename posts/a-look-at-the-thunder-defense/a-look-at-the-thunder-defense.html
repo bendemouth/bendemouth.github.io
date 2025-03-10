@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-02-13">
+<meta name="dcterms.date" content="2025-02-13">
 <meta name="description" content="Looking at what makes the OKC Thunder successful on defenese">
 
 <title>A Look at the Thunder Defense – bendemouth.github.io</title>
@@ -172,7 +172,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">February 13, 2024</p>
+        <p class="date">February 13, 2025</p>
       </div>
     </div>
     
@@ -198,7 +198,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="understanding-the-three-point-revolution">Understanding the Three-Point Revolution</h2>
 <p>In order to understand the Thunder’s response to the three-point revolution, we need to understand <em>why</em> teams started hunting these long-range shots in the first place. “But Ben, the three-point revolution is simple. Three is more than two, so it’s better. Also, this is a defensive blog, why are you writing about offense?” First off, props to your math teacher. Second, mind your business, we’ll get there.</p>
 <p><a href="https://www.si.com/onsi/ball-around/news/former-all-star-guard-slams-lack-of-creativity-with-current-nba-players-01jdqg9b8bx5">Despite what certain former NBA players would have you believe</a>, the three-point revolution is not simply about taking shots that are more worth more than two-pointers. It is a response to defensive changes. In the 2000s, the NBA was all about getting your best player in a one-on-one matchup so they could drive to the hoop. Defenses started packing the paint to make those layups more difficult, freeing up perimeter shooters. Rather than taking a contested layup, teams could get better looks from three.</p>
-<p>That doesn’t mean that teams do not want layups. Layups are still the first choice for any offense. Where the real change has come is in the choice between an open mid-range shot and an open three-pointer. <a href="https://youtu.be/hhB1vPM8ItA?si=_J52r6xdFwlPtRu8&amp;t=168">Teams shoot rougly the same percentage from 10-22 feet as they do from 23 feet</a>. Those 10-22 foot shots are only worth two, though, while going beyond 22’ 9” is worth three. So, if you can’t get a good layup, and you have a choice between a shot that is worth two and a shot that is worth three, knowing you make them at roughly the same clip, you’re going to take the three. The “three-point revolution” has never been about getting rid of layups. It answers the question of, “if I can’t get a good layup, what is my next best option?”</p>
+<p>That doesn’t mean that teams do not want layups. Layups are still the first choice for any offense. Where the real change has come is in the choice between an open mid-range shot and an open three-pointer. <a href="https://youtu.be/hhB1vPM8ItA?si=_J52r6xdFwlPtRu8&amp;t=168">Teams shoot roughly the same percentage from 10-22 feet as they do from 23 feet</a>. Those 10-22 foot shots are only worth two, though, while going beyond 22’ 9” is worth three. So, if you can’t get a good layup, and you have a choice between a shot that is worth two and a shot that is worth three, knowing you make them at roughly the same clip, you’re going to take the three. The “three-point revolution” has never been about getting rid of layups. It answers the question of, “if I can’t get a good layup, what is my next best option?”</p>
 </section>
 <section id="the-thunder-make-teams-take-bad-shots" class="level2">
 <h2 class="anchored" data-anchor-id="the-thunder-make-teams-take-bad-shots">The Thunder Make Teams Take Bad Shots</h2>
@@ -485,45 +485,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="cell-7" class="cell" data-execution_count="5">
+<div id="cell-7" class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>scatter_data <span class="op">=</span> pl.concat([hustle_box_data, thunder_hustle_box_data])</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>scatter_data <span class="op">=</span> scatter_data.with_columns(</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    pl.lit(<span class="st">"Other"</span>).alias(<span class="st">"team_group"</span>)  <span class="co"># First create column with all "Other"</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    pl.lit(<span class="st">"Other"</span>).alias(<span class="st">"team_group"</span>)  </span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Then update just the Thunder rows</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>scatter_data <span class="op">=</span> scatter_data.with_columns(</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    pl.when(pl.col(<span class="st">"TEAM_NAME"</span>) <span class="op">==</span> <span class="st">"Oklahoma City Thunder"</span>)</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    .then(pl.lit(<span class="st">"Thunder"</span>))</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    .otherwise(pl.col(<span class="st">"team_group"</span>))</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">"team_group"</span>)</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.scatter(</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    data_frame<span class="op">=</span>scatter_data,</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'FG3A'</span>,</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'pct_uncontested_threes'</span>,</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    hover_data<span class="op">=</span>[<span class="st">'TEAM_NAME'</span>],</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'team_group'</span>,</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    color_discrete_map<span class="op">=</span>{</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Thunder'</span>: thunder_orange,</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Other'</span> : thunder_blue</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>fig.update_layout(</span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Three Point Attempts vs Uncontested Percentage'</span>,</span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    xaxis_title<span class="op">=</span><span class="st">'Opponent Three Point Attempts per Game'</span>,</span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    yaxis_title<span class="op">=</span><span class="st">'Percentage of Uncontested 3s'</span>,</span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>    showlegend<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    yaxis<span class="op">=</span><span class="bu">dict</span>(</span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>        tickformat<span class="op">=</span><span class="st">'.1%'</span></span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>scatter_data <span class="op">=</span> scatter_data.with_columns(</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    pl.when(pl.col(<span class="st">"TEAM_NAME"</span>) <span class="op">==</span> <span class="st">"Oklahoma City Thunder"</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    .then(pl.lit(<span class="st">"Thunder"</span>))</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    .otherwise(pl.col(<span class="st">"team_group"</span>))</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">"team_group"</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.scatter(</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    data_frame<span class="op">=</span>scatter_data,</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'FG3A'</span>,</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'pct_uncontested_threes'</span>,</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    hover_data<span class="op">=</span>[<span class="st">'TEAM_NAME'</span>],</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'team_group'</span>,</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    color_discrete_map<span class="op">=</span>{</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Thunder'</span>: thunder_orange,</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Other'</span> : thunder_blue</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>fig.update_layout(</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Three Point Attempts vs Uncontested Percentage'</span>,</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    xaxis_title<span class="op">=</span><span class="st">'Opponent Three Point Attempts per Game'</span>,</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    yaxis_title<span class="op">=</span><span class="st">'Percentage of Uncontested 3s'</span>,</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    showlegend<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>    yaxis<span class="op">=</span><span class="bu">dict</span>(</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>        tickformat<span class="op">=</span><span class="st">'.1%'</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <pre><code>Unable to display output for mime type(s): application/vnd.plotly.v1+json</code></pre>
 </div>
