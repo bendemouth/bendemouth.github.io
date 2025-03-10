@@ -195,7 +195,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>If you are looking for another blog with some takes about whether or not the transfer portal is good for The Sport™, there are plenty of those elsewhere. I’m interested in seeing how much roster turnover and, by extension, the Transfer Portal matters for team success.</p>
 <p>I’m particularly interested in the Non-Power Conference teams. One of the biggest criticisms from the people most affected by the Transfer Portal is that the lower level teams get picked clean by the bigger programs each off-season. I want to see if that is true and, if it is, to what effect.</p>
 <p>I’m pulling data from the <a href="https://github.com/CFBD/cfbd-python">cfbd-python library</a> for this post. If you like college football, this API is a must for your data analysis. A note on the API: you must sign up for an API key in order to use this it. It is very easy to get one and it is generally sent out very quickly after you sign up. I have a cell block hidden below my imports that configures my API key so I can make requests, so you will not be able to replicate my code simply from copying and pasting. Follow the documentation to configure your API and you’ll be golden.</p>
-<div id="cell-2" class="cell" data-execution_count="560">
+<div id="cell-2" class="cell" data-execution_count="48">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> cfbd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> cfbd.rest <span class="im">import</span> ApiException</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> cfbd.models.team_record <span class="im">import</span> TeamRecord</span>
@@ -206,7 +206,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-4" class="cell" data-execution_count="562">
+<div id="cell-4" class="cell" data-execution_count="50">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> cfbd.ApiClient(configuration)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>teams_api <span class="op">=</span> cfbd.TeamsApi(client)</span>
@@ -214,48 +214,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>games_api <span class="op">=</span> cfbd.GamesApi(client)</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>players_api <span class="op">=</span> cfbd.PlayersApi(client)</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>returning_production_response <span class="op">=</span> []</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>records_response <span class="op">=</span> []</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>transfer_response <span class="op">=</span> []</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    teams_response <span class="op">=</span> teams_api.get_fbs_teams() <span class="co"># Get a list of all FBS teams</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> year <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2021</span>, <span class="dv">2025</span>): <span class="co"># Get data for 2021-2024</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        returning_production_response <span class="op">+=</span> players_api.get_returning_production(year<span class="op">=</span>year) <span class="co"># Returning production</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        records_response <span class="op">+=</span> games_api.get_team_records(year<span class="op">=</span>year) <span class="co"># Team records</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        transfer_response <span class="op">+=</span> players_api.get_transfer_portal(year<span class="op">=</span>year) <span class="co"># Transfer players</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> ApiException <span class="im">as</span> e:</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Exception when calling StatsApi-&gt;get_stats_seasons: </span><span class="sc">%s</span><span class="ch">\n</span><span class="st">"</span> <span class="op">%</span> e)</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Status code: </span><span class="sc">%s</span><span class="st">"</span> <span class="op">%</span> e.status)</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Data response comes as object, we need to convert them to dictionaries</span></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>team_dicts <span class="op">=</span> [<span class="bu">vars</span>(team) <span class="cf">for</span> team <span class="kw">in</span> teams_response]</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>teams_df <span class="op">=</span> pd.DataFrame(team_dicts)</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>returning_production_dicts <span class="op">=</span> [<span class="bu">vars</span>(returning_production) <span class="cf">for</span> returning_production <span class="kw">in</span> returning_production_response]</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>returning_production_df <span class="op">=</span> pd.DataFrame(returning_production_dicts)</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>records_dicts <span class="op">=</span> [<span class="bu">vars</span>(record) <span class="cf">for</span> record <span class="kw">in</span> records_response]</span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>records_df <span class="op">=</span> pd.DataFrame(records_dicts)</span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="co"># The records have nested objects in these columns, so we need to extract that data into their own columns</span></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>nested_columns <span class="op">=</span> [<span class="st">"_total"</span>, <span class="st">"_conference_games"</span>, <span class="st">"_home_games"</span>, <span class="st">"_away_games"</span>]</span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> column <span class="kw">in</span> nested_columns:</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    records_df[column] <span class="op">=</span> records_df[column].<span class="bu">apply</span>(<span class="kw">lambda</span> x: <span class="bu">vars</span>(x) <span class="cf">if</span> x <span class="cf">else</span> {})</span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    normalized_df <span class="op">=</span> pd.json_normalize(records_df[column])</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    normalized_df.columns <span class="op">=</span> [<span class="ss">f"</span><span class="sc">{</span>column[<span class="dv">1</span>:]<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>subcolumn<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> subcolumn <span class="kw">in</span> normalized_df.columns]</span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    records_df <span class="op">=</span> pd.concat([records_df, normalized_df], axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    records_df.drop(columns<span class="op">=</span>[column], inplace<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>transfer_dicts <span class="op">=</span> [<span class="bu">vars</span>(transfer) <span class="cf">for</span> transfer <span class="kw">in</span> transfer_response]</span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>transfer_df <span class="op">=</span> pd.DataFrame(transfer_dicts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>records_response <span class="op">=</span> []</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>transfer_response <span class="op">=</span> []</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    teams_response <span class="op">=</span> teams_api.get_fbs_teams() <span class="co"># Get a list of all FBS teams</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> year <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2021</span>, <span class="dv">2025</span>): <span class="co"># Get data for 2021-2024</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        records_response <span class="op">+=</span> games_api.get_records(year<span class="op">=</span>year) <span class="co"># Team records</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        transfer_response <span class="op">+=</span> players_api.get_transfer_portal(year<span class="op">=</span>year) <span class="co"># Transfer players</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> ApiException <span class="im">as</span> e:</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Exception when calling StatsApi-&gt;get_stats_seasons: </span><span class="sc">%s</span><span class="ch">\n</span><span class="st">"</span> <span class="op">%</span> e)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Status code: </span><span class="sc">%s</span><span class="st">"</span> <span class="op">%</span> e.status)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Data response comes as object, we need to convert them to dictionaries</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>team_dicts <span class="op">=</span> [<span class="bu">vars</span>(team) <span class="cf">for</span> team <span class="kw">in</span> teams_response]</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>teams_df <span class="op">=</span> pd.DataFrame(team_dicts)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>records_dicts <span class="op">=</span> [<span class="bu">vars</span>(record) <span class="cf">for</span> record <span class="kw">in</span> records_response]</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>records_df <span class="op">=</span> pd.DataFrame(records_dicts)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>transfer_dicts <span class="op">=</span> [<span class="bu">vars</span>(transfer) <span class="cf">for</span> transfer <span class="kw">in</span> transfer_response]</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>transfer_df <span class="op">=</span> pd.DataFrame(transfer_dicts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This dataframe gets us a list of all FBS college football teams.</p>
-<div id="cell-6" class="cell" data-execution_count="563">
+<div id="cell-6" class="cell" data-execution_count="51">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>teams_df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="563">
+<div class="cell-output cell-output-display" data-execution_count="51">
 <div>
 
 
@@ -263,263 +248,101 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">_configuration</th>
-<th data-quarto-table-cell-role="th">_id</th>
-<th data-quarto-table-cell-role="th">_school</th>
-<th data-quarto-table-cell-role="th">_mascot</th>
-<th data-quarto-table-cell-role="th">_abbreviation</th>
-<th data-quarto-table-cell-role="th">_alt_name_1</th>
-<th data-quarto-table-cell-role="th">_alt_name_2</th>
-<th data-quarto-table-cell-role="th">_alt_name_3</th>
-<th data-quarto-table-cell-role="th">_classification</th>
-<th data-quarto-table-cell-role="th">_conference</th>
-<th data-quarto-table-cell-role="th">_division</th>
-<th data-quarto-table-cell-role="th">_color</th>
-<th data-quarto-table-cell-role="th">_alt_color</th>
-<th data-quarto-table-cell-role="th">_logos</th>
-<th data-quarto-table-cell-role="th">_twitter</th>
-<th data-quarto-table-cell-role="th">_location</th>
-<th data-quarto-table-cell-role="th">discriminator</th>
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th">school</th>
+<th data-quarto-table-cell-role="th">mascot</th>
+<th data-quarto-table-cell-role="th">abbreviation</th>
+<th data-quarto-table-cell-role="th">alternate_names</th>
+<th data-quarto-table-cell-role="th">conference</th>
+<th data-quarto-table-cell-role="th">division</th>
+<th data-quarto-table-cell-role="th">classification</th>
+<th data-quarto-table-cell-role="th">color</th>
+<th data-quarto-table-cell-role="th">alternate_color</th>
+<th data-quarto-table-cell-role="th">logos</th>
+<th data-quarto-table-cell-role="th">twitter</th>
+<th data-quarto-table-cell-role="th">location</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">0</td>
-<td>&lt;cfbd.configuration.Configuration object at 0x...</td>
 <td>2005</td>
 <td>Air Force</td>
 <td>Falcons</td>
 <td>AFA</td>
-<td>None</td>
-<td>None</td>
-<td>None</td>
-<td>None</td>
+<td>[AFA, Air Force]</td>
 <td>Mountain West</td>
 <td>None</td>
+<td>fbs</td>
 <td>#004a7b</td>
 <td>#ffffff</td>
 <td>[http://a.espncdn.com/i/teamlogos/ncaa/500/200...</td>
 <td>@AF_Football</td>
-<td>{'capacity': 46692.0,\n 'city': 'Colorado Spri...</td>
-<td>None</td>
+<td>id=3713 name='Falcon Stadium' city='Colorado S...</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">1</td>
-<td>&lt;cfbd.configuration.Configuration object at 0x...</td>
 <td>2006</td>
 <td>Akron</td>
 <td>Zips</td>
 <td>AKR</td>
-<td>None</td>
-<td>None</td>
-<td>None</td>
-<td>None</td>
+<td>[AKR, Akron]</td>
 <td>Mid-American</td>
 <td>None</td>
+<td>fbs</td>
 <td>#00285e</td>
 <td>#84754e</td>
 <td>[http://a.espncdn.com/i/teamlogos/ncaa/500/200...</td>
 <td>@ZipsFB</td>
-<td>{'capacity': 30000.0,\n 'city': 'Akron',\n 'co...</td>
-<td>None</td>
+<td>id=3768 name='InfoCision Stadium' city='Akron'...</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2</td>
-<td>&lt;cfbd.configuration.Configuration object at 0x...</td>
 <td>333</td>
 <td>Alabama</td>
 <td>Crimson Tide</td>
 <td>ALA</td>
-<td>None</td>
-<td>None</td>
-<td>None</td>
-<td>None</td>
+<td>[ALA, Alabama]</td>
 <td>SEC</td>
 <td>None</td>
+<td>fbs</td>
 <td>#9e1632</td>
 <td>#ffffff</td>
 <td>[http://a.espncdn.com/i/teamlogos/ncaa/500/333...</td>
 <td>@AlabamaFTBL</td>
-<td>{'capacity': 101821.0,\n 'city': 'Tuscaloosa',...</td>
-<td>None</td>
+<td>id=3657 name='Bryant-Denny Stadium' city='Tusc...</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">3</td>
-<td>&lt;cfbd.configuration.Configuration object at 0x...</td>
 <td>2026</td>
 <td>App State</td>
 <td>Mountaineers</td>
 <td>APP</td>
-<td>None</td>
-<td>None</td>
-<td>None</td>
-<td>None</td>
+<td>[Appalachian State, APP, App State]</td>
 <td>Sun Belt</td>
 <td>East</td>
+<td>fbs</td>
 <td>#ffcc00</td>
 <td>#222222</td>
 <td>[http://a.espncdn.com/i/teamlogos/ncaa/500/202...</td>
 <td>@AppState_FB</td>
-<td>{'capacity': 30000.0,\n 'city': 'Boone',\n 'co...</td>
-<td>None</td>
+<td>id=3792 name='Kidd Brewer Stadium' city='Boone...</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">4</td>
-<td>&lt;cfbd.configuration.Configuration object at 0x...</td>
 <td>12</td>
 <td>Arizona</td>
 <td>Wildcats</td>
 <td>ARIZ</td>
-<td>None</td>
-<td>None</td>
-<td>None</td>
-<td>None</td>
+<td>[ARIZ, Arizona]</td>
 <td>Big 12</td>
 <td>None</td>
+<td>fbs</td>
 <td>#0c234b</td>
 <td>#ab0520</td>
 <td>[http://a.espncdn.com/i/teamlogos/ncaa/500/12....</td>
 <td>@ArizonaFBall</td>
-<td>{'capacity': 50782.0,\n 'city': 'Tucson',\n 'c...</td>
-<td>None</td>
-</tr>
-</tbody>
-</table>
-
-</div>
-</div>
-</div>
-<p>This dataframe has returning production for each team. This gives us a percentage of usage returning and PPA numbers. PPA (sometimes called EPA) is a measure of how many expected points are added on a given play.</p>
-<div id="cell-8" class="cell" data-execution_count="564">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>returning_production_df <span class="op">=</span> returning_production_df[returning_production_df[<span class="st">'_team'</span>].isin(teams_df[<span class="st">'_school'</span>])]</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>returning_production_df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="564">
-<div>
-
-
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">_configuration</th>
-<th data-quarto-table-cell-role="th">_season</th>
-<th data-quarto-table-cell-role="th">_team</th>
-<th data-quarto-table-cell-role="th">_conference</th>
-<th data-quarto-table-cell-role="th">_total_ppa</th>
-<th data-quarto-table-cell-role="th">_total_passing_ppa</th>
-<th data-quarto-table-cell-role="th">_total_receiving_ppa</th>
-<th data-quarto-table-cell-role="th">_total_rushing_ppa</th>
-<th data-quarto-table-cell-role="th">_percent_ppa</th>
-<th data-quarto-table-cell-role="th">_percent_passing_ppa</th>
-<th data-quarto-table-cell-role="th">_percent_receiving_ppa</th>
-<th data-quarto-table-cell-role="th">_percent_rushing_ppa</th>
-<th data-quarto-table-cell-role="th">_usage</th>
-<th data-quarto-table-cell-role="th">_passing_usage</th>
-<th data-quarto-table-cell-role="th">_receiving_usage</th>
-<th data-quarto-table-cell-role="th">_rushing_usage</th>
-<th data-quarto-table-cell-role="th">discriminator</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
-<td>&lt;cfbd.configuration.Configuration object at 0x...</td>
-<td>2021</td>
-<td>Air Force</td>
-<td>Mountain West</td>
-<td>126.8</td>
-<td>35.0</td>
-<td>20.8</td>
-<td>71.0</td>
-<td>0.742</td>
-<td>1.000</td>
-<td>0.540</td>
-<td>0.724</td>
-<td>0.724</td>
-<td>1.000</td>
-<td>0.745</td>
-<td>0.662</td>
-<td>None</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
-<td>&lt;cfbd.configuration.Configuration object at 0x...</td>
-<td>2021</td>
-<td>Akron</td>
-<td>Mid-American</td>
-<td>27.5</td>
-<td>-19.8</td>
-<td>23.1</td>
-<td>24.2</td>
-<td>0.611</td>
-<td>0.756</td>
-<td>0.545</td>
-<td>0.826</td>
-<td>0.805</td>
-<td>0.902</td>
-<td>0.694</td>
-<td>0.788</td>
-<td>None</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
-<td>&lt;cfbd.configuration.Configuration object at 0x...</td>
-<td>2021</td>
-<td>Alabama</td>
-<td>SEC</td>
-<td>148.6</td>
-<td>16.7</td>
-<td>90.1</td>
-<td>41.7</td>
-<td>0.198</td>
-<td>0.058</td>
-<td>0.268</td>
-<td>0.336</td>
-<td>0.260</td>
-<td>0.072</td>
-<td>0.349</td>
-<td>0.368</td>
-<td>None</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">4</td>
-<td>&lt;cfbd.configuration.Configuration object at 0x...</td>
-<td>2021</td>
-<td>Arizona</td>
-<td>Pac-12</td>
-<td>40.2</td>
-<td>-15.2</td>
-<td>41.4</td>
-<td>14.0</td>
-<td>0.442</td>
-<td>-2.980</td>
-<td>0.704</td>
-<td>0.515</td>
-<td>0.478</td>
-<td>0.427</td>
-<td>0.648</td>
-<td>0.371</td>
-<td>None</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">5</td>
-<td>&lt;cfbd.configuration.Configuration object at 0x...</td>
-<td>2021</td>
-<td>Arizona State</td>
-<td>Pac-12</td>
-<td>127.8</td>
-<td>29.8</td>
-<td>47.1</td>
-<td>50.8</td>
-<td>0.983</td>
-<td>1.000</td>
-<td>0.946</td>
-<td>1.000</td>
-<td>0.966</td>
-<td>1.000</td>
-<td>0.855</td>
-<td>1.000</td>
-<td>None</td>
+<td>id=3619 name='Arizona Stadium' city='Tucson' s...</td>
 </tr>
 </tbody>
 </table>
@@ -528,10 +351,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Get the records for each team each season.</p>
-<div id="cell-10" class="cell" data-execution_count="565">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>records_df <span class="op">=</span> records_df[records_df[<span class="st">'_team'</span>].isin(teams_df[<span class="st">'_school'</span>])]</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>records_df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="565">
+<div id="cell-8" class="cell" data-execution_count="52">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_attributes(team_record):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">hasattr</span>(team_record, <span class="st">'_dict__'</span>): </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> pd.Series(team_record.__dict__)  </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.Series()  </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>nested_columns <span class="op">=</span> [<span class="st">'total'</span>, <span class="st">'conference_games'</span>, <span class="st">'home_games'</span>, </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                  <span class="st">'away_games'</span>, <span class="st">'neutral_site_games'</span>, <span class="st">'regular_season'</span>, <span class="st">'postseason'</span>]</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>expanded_dataframes <span class="op">=</span> []</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> nested_columns:</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    expanded_df <span class="op">=</span> records_df[col].<span class="bu">apply</span>(extract_attributes)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    expanded_df <span class="op">=</span> expanded_df.add_prefix(<span class="ss">f"</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">_"</span>) </span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    expanded_dataframes.append(expanded_df)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>records_df <span class="op">=</span> pd.concat([records_df] <span class="op">+</span> expanded_dataframes, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>records_df <span class="op">=</span> records_df.drop(columns<span class="op">=</span>nested_columns)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>records_df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="52">
 <div>
 
 
@@ -539,184 +379,75 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">_configuration</th>
-<th data-quarto-table-cell-role="th">_year</th>
-<th data-quarto-table-cell-role="th">_team_id</th>
-<th data-quarto-table-cell-role="th">_team</th>
-<th data-quarto-table-cell-role="th">_conference</th>
-<th data-quarto-table-cell-role="th">_division</th>
-<th data-quarto-table-cell-role="th">_expected_wins</th>
-<th data-quarto-table-cell-role="th">discriminator</th>
-<th data-quarto-table-cell-role="th">total__configuration</th>
-<th data-quarto-table-cell-role="th">total__games</th>
-<th data-quarto-table-cell-role="th">...</th>
-<th data-quarto-table-cell-role="th">home_games__wins</th>
-<th data-quarto-table-cell-role="th">home_games__losses</th>
-<th data-quarto-table-cell-role="th">home_games__ties</th>
-<th data-quarto-table-cell-role="th">home_games_discriminator</th>
-<th data-quarto-table-cell-role="th">away_games__configuration</th>
-<th data-quarto-table-cell-role="th">away_games__games</th>
-<th data-quarto-table-cell-role="th">away_games__wins</th>
-<th data-quarto-table-cell-role="th">away_games__losses</th>
-<th data-quarto-table-cell-role="th">away_games__ties</th>
-<th data-quarto-table-cell-role="th">away_games_discriminator</th>
+<th data-quarto-table-cell-role="th">year</th>
+<th data-quarto-table-cell-role="th">team_id</th>
+<th data-quarto-table-cell-role="th">team</th>
+<th data-quarto-table-cell-role="th">classification</th>
+<th data-quarto-table-cell-role="th">conference</th>
+<th data-quarto-table-cell-role="th">division</th>
+<th data-quarto-table-cell-role="th">expected_wins</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>2021</td>
+<td>2</td>
+<td>Auburn</td>
+<td>DivisionClassification.FBS</td>
+<td>SEC</td>
+<td>West</td>
+<td>6.267284</td>
+</tr>
+<tr class="even">
 <td data-quarto-table-cell-role="th">1</td>
-<td>&lt;cfbd.configuration.Configuration object at 0x...</td>
 <td>2021</td>
-<td>62</td>
-<td>Hawai'i</td>
-<td>Mountain West</td>
-<td>West</td>
-<td>6.3</td>
-<td>None</td>
-<td>&lt;cfbd.configuration.Configuration object at 0x...</td>
-<td>13</td>
-<td>...</td>
-<td>4</td>
-<td>2</td>
-<td>0</td>
-<td>None</td>
-<td>&lt;cfbd.configuration.Configuration object at 0x...</td>
-<td>7</td>
-<td>2</td>
-<td>5</td>
-<td>0</td>
-<td>None</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">7</td>
-<td>&lt;cfbd.configuration.Configuration object at 0x...</td>
-<td>2021</td>
-<td>2306</td>
-<td>Kansas State</td>
-<td>Big 12</td>
+<td>2169</td>
+<td>Delaware State</td>
+<td>DivisionClassification.FCS</td>
+<td>MEAC</td>
 <td></td>
-<td>7.4</td>
-<td>None</td>
-<td>&lt;cfbd.configuration.Configuration object at 0x...</td>
-<td>13</td>
-<td>...</td>
-<td>4</td>
-<td>3</td>
-<td>0</td>
-<td>None</td>
-<td>&lt;cfbd.configuration.Configuration object at 0x...</td>
-<td>4</td>
-<td>2</td>
-<td>2</td>
-<td>0</td>
-<td>None</td>
+<td>NaN</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">13</td>
-<td>&lt;cfbd.configuration.Configuration object at 0x...</td>
+<td data-quarto-table-cell-role="th">2</td>
 <td>2021</td>
-<td>2751</td>
-<td>Wyoming</td>
-<td>Mountain West</td>
-<td>Mountain</td>
-<td>7.6</td>
-<td>None</td>
-<td>&lt;cfbd.configuration.Configuration object at 0x...</td>
-<td>13</td>
-<td>...</td>
-<td>3</td>
-<td>3</td>
-<td>0</td>
-<td>None</td>
-<td>&lt;cfbd.configuration.Configuration object at 0x...</td>
-<td>6</td>
-<td>3</td>
-<td>3</td>
-<td>0</td>
-<td>None</td>
+<td>2447</td>
+<td>Nicholls</td>
+<td>DivisionClassification.FCS</td>
+<td>Southland</td>
+<td></td>
+<td>0.780959</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">15</td>
-<td>&lt;cfbd.configuration.Configuration object at 0x...</td>
+<td data-quarto-table-cell-role="th">3</td>
 <td>2021</td>
-<td>213</td>
-<td>Penn State</td>
-<td>Big Ten</td>
-<td>East</td>
-<td>7.1</td>
-<td>None</td>
-<td>&lt;cfbd.configuration.Configuration object at 0x...</td>
-<td>13</td>
-<td>...</td>
-<td>5</td>
-<td>2</td>
-<td>0</td>
-<td>None</td>
-<td>&lt;cfbd.configuration.Configuration object at 0x...</td>
-<td>5</td>
-<td>2</td>
-<td>3</td>
-<td>0</td>
-<td>None</td>
+<td>2487</td>
+<td>Pace</td>
+<td>DivisionClassification.II</td>
+<td>Northeast 10</td>
+<td></td>
+<td>NaN</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">27</td>
-<td>&lt;cfbd.configuration.Configuration object at 0x...</td>
+<td data-quarto-table-cell-role="th">4</td>
 <td>2021</td>
-<td>2649</td>
-<td>Toledo</td>
-<td>Mid-American</td>
-<td>West</td>
-<td>8.0</td>
-<td>None</td>
-<td>&lt;cfbd.configuration.Configuration object at 0x...</td>
-<td>13</td>
-<td>...</td>
-<td>3</td>
-<td>3</td>
-<td>0</td>
-<td>None</td>
-<td>&lt;cfbd.configuration.Configuration object at 0x...</td>
-<td>6</td>
-<td>4</td>
-<td>2</td>
-<td>0</td>
-<td>None</td>
+<td>2823</td>
+<td>Northwestern Oklahoma State</td>
+<td>DivisionClassification.II</td>
+<td>Great American</td>
+<td></td>
+<td>NaN</td>
 </tr>
 </tbody>
 </table>
 
-<p>5 rows × 32 columns</p>
 </div>
 </div>
 </div>
-<p>And finally, get the number of incoming transfers for a season. These are grouped based on transfer date. Because the transfer portal windows are all in the same year in which a season is played, we do not need to lag this by a year. For example, if a player transfers in May of 2025, he would be eligible to play for the fall 2025 season.</p>
-<div id="cell-12" class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>transfer_df <span class="op">=</span> transfer_df.dropna(subset<span class="op">=</span>[<span class="st">'_destination'</span>, <span class="st">'_origin'</span>])</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>transfers_in <span class="op">=</span> (</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    transfer_df.groupby([<span class="st">'_destination'</span>, <span class="st">'_season'</span>])</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    .size()</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    .reset_index(name<span class="op">=</span><span class="st">'total_transfers_in'</span>)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>transfers_out <span class="op">=</span> (</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    transfer_df.groupby([<span class="st">'_origin'</span>, <span class="st">'_season'</span>])</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    .size()</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    .reset_index(name<span class="op">=</span><span class="st">'total_transfers_out'</span>)</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>transfer_df <span class="op">=</span> (</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    pd.merge(</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        transfers_in, transfers_out,</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>        left_on<span class="op">=</span>[<span class="st">'_destination'</span>, <span class="st">'_season'</span>],</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>        right_on<span class="op">=</span>[<span class="st">'_origin'</span>, <span class="st">'_season'</span>],</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>        how<span class="op">=</span><span class="st">'outer'</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>transfer_df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="566">
+<div id="cell-9" class="cell" data-execution_count="53">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>transfer_df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="53">
 <div>
 
 
@@ -724,10 +455,126 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">_destination</th>
-<th data-quarto-table-cell-role="th">_season</th>
+<th data-quarto-table-cell-role="th">season</th>
+<th data-quarto-table-cell-role="th">first_name</th>
+<th data-quarto-table-cell-role="th">last_name</th>
+<th data-quarto-table-cell-role="th">position</th>
+<th data-quarto-table-cell-role="th">origin</th>
+<th data-quarto-table-cell-role="th">destination</th>
+<th data-quarto-table-cell-role="th">transfer_date</th>
+<th data-quarto-table-cell-role="th">rating</th>
+<th data-quarto-table-cell-role="th">stars</th>
+<th data-quarto-table-cell-role="th">eligibility</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>2021</td>
+<td>Cameron</td>
+<td>Wilkins</td>
+<td>LB</td>
+<td>Missouri</td>
+<td>UTSA</td>
+<td>2021-07-31 14:46:00+00:00</td>
+<td>NaN</td>
+<td>3.0</td>
+<td>TransferEligibility.IMMEDIATE</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>2021</td>
+<td>Stephon</td>
+<td>Wright</td>
+<td>DL</td>
+<td>Arizona State</td>
+<td>SMU</td>
+<td>2021-07-29 15:50:00+00:00</td>
+<td>NaN</td>
+<td>4.0</td>
+<td>TransferEligibility.IMMEDIATE</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>2021</td>
+<td>Javar</td>
+<td>Strong</td>
+<td>S</td>
+<td>Arkansas State</td>
+<td>None</td>
+<td>2021-07-28 15:25:00+00:00</td>
+<td>NaN</td>
+<td>3.0</td>
+<td>TransferEligibility.IMMEDIATE</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>2021</td>
+<td>Noah</td>
+<td>Mitchell</td>
+<td>LB</td>
+<td>UTSA</td>
+<td>None</td>
+<td>2021-07-27 15:22:00+00:00</td>
+<td>NaN</td>
+<td>3.0</td>
+<td>TransferEligibility.IMMEDIATE</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>2021</td>
+<td>Trivenskey</td>
+<td>Mosley</td>
+<td>RB</td>
+<td>Southern Miss</td>
+<td>None</td>
+<td>2021-07-26 00:00:00+00:00</td>
+<td>NaN</td>
+<td>3.0</td>
+<td>TransferEligibility.TBD</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>And finally, get the number of incoming transfers for a season. These are grouped based on transfer date. Because the transfer portal windows are all in the same year in which a season is played, we do not need to lag this by a year. For example, if a player transfers in May of 2025, he would be eligible to play for the fall 2025 season.</p>
+<div id="cell-11" class="cell" data-execution_count="54">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>transfers_in <span class="op">=</span> (</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    transfer_df.groupby([<span class="st">'destination'</span>, <span class="st">'season'</span>])</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    .size()</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    .reset_index(name<span class="op">=</span><span class="st">'total_transfers_in'</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>transfers_out <span class="op">=</span> (</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    transfer_df.groupby([<span class="st">'origin'</span>, <span class="st">'season'</span>])</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    .size()</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    .reset_index(name<span class="op">=</span><span class="st">'total_transfers_out'</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>transfer_df <span class="op">=</span> (</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    pd.merge(</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        transfers_in, transfers_out,</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        left_on<span class="op">=</span>[<span class="st">'destination'</span>, <span class="st">'season'</span>],</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        right_on<span class="op">=</span>[<span class="st">'origin'</span>, <span class="st">'season'</span>],</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>        how<span class="op">=</span><span class="st">'outer'</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>transfer_df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="54">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">destination</th>
+<th data-quarto-table-cell-role="th">season</th>
 <th data-quarto-table-cell-role="th">total_transfers_in</th>
-<th data-quarto-table-cell-role="th">_origin</th>
+<th data-quarto-table-cell-role="th">origin</th>
 <th data-quarto-table-cell-role="th">total_transfers_out</th>
 </tr>
 </thead>
@@ -770,7 +617,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>2021</td>
 <td>2.0</td>
 <td>Air Force</td>
-<td>2.0</td>
+<td>4.0</td>
 </tr>
 </tbody>
 </table>
@@ -779,30 +626,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Combine them all together and…</p>
-<div id="cell-14" class="cell" data-execution_count="567">
+<div id="cell-13" class="cell" data-execution_count="62">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine data frames with a series of merges</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> teams_df.merge(records_df.set_index(<span class="st">'_team_id'</span>), how<span class="op">=</span><span class="st">"inner"</span>, </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                    left_on<span class="op">=</span>[<span class="st">'_id'</span>], right_on<span class="op">=</span>[<span class="st">'_team_id'</span>])</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> teams_df.merge(records_df.set_index(<span class="st">'team_id'</span>), how<span class="op">=</span><span class="st">"inner"</span>, </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                    left_on<span class="op">=</span>[<span class="st">'id'</span>], right_on<span class="op">=</span>[<span class="st">'team_id'</span>])</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.merge(returning_production_df, how<span class="op">=</span><span class="st">'left'</span>, </span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>              left_on<span class="op">=</span>[<span class="st">'_team'</span>, <span class="st">'_year'</span>], right_on<span class="op">=</span>[<span class="st">'_team'</span>, <span class="st">'_season'</span>])</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.merge(transfer_df, how<span class="op">=</span><span class="st">'left'</span>, </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>              left_on<span class="op">=</span>[<span class="st">'school'</span>, <span class="st">'year'</span>], right_on<span class="op">=</span>[<span class="st">'destination'</span>, <span class="st">'season'</span>])</span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.merge(transfer_df, how<span class="op">=</span><span class="st">'left'</span>, </span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>              left_on<span class="op">=</span>[<span class="st">'_school'</span>, <span class="st">'_year'</span>], right_on<span class="op">=</span>[<span class="st">'_destination'</span>, <span class="st">'_season'</span>])</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#Get rid of columns that were duplicated in the merges and others that are not needed</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.loc[:, <span class="op">~</span>df.columns.<span class="bu">str</span>.endswith((<span class="st">'_x'</span>, <span class="st">'_y'</span>)) </span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>            <span class="op">&amp;</span> <span class="op">~</span>df.columns.<span class="bu">str</span>.contains(<span class="st">'_alt_name'</span>)  </span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>            <span class="op">&amp;</span> <span class="op">~</span>df.columns.<span class="bu">str</span>.contains(<span class="st">'discriminator'</span>) </span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>            <span class="op">&amp;</span> <span class="op">~</span>df.columns.<span class="bu">str</span>.contains(<span class="st">'configuration'</span>)]</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop records that are missing the data that we will need</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>usage_ppa_transfer_cols <span class="op">=</span> df.columns[df.columns.<span class="bu">str</span>.endswith((<span class="st">'_usage'</span>, <span class="st">'_ppa'</span>, <span class="st">'total_transfers_in'</span>))].tolist()</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.dropna(subset<span class="op">=</span>usage_ppa_transfer_cols)</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="567">
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#Get rid of columns that were duplicated in the merges and others that are not needed</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.loc[:, <span class="op">~</span>df.columns.<span class="bu">str</span>.endswith(<span class="st">'y'</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>            <span class="op">&amp;</span> <span class="op">~</span>df.columns.<span class="bu">str</span>.contains(<span class="st">'alt_name'</span>)  </span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>            <span class="op">&amp;</span> <span class="op">~</span>df.columns.<span class="bu">str</span>.contains(<span class="st">'discriminator'</span>) </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>            <span class="op">&amp;</span> <span class="op">~</span>df.columns.<span class="bu">str</span>.contains(<span class="st">'configuration'</span>)]</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> df.columns:</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> col.endswith(<span class="st">'_x'</span>):</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>        df.rename(columns<span class="op">=</span>{col: col[:<span class="op">-</span><span class="dv">2</span>]}, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="62">
 <div>
 
 
@@ -810,26 +654,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">_id</th>
-<th data-quarto-table-cell-role="th">_school</th>
-<th data-quarto-table-cell-role="th">_mascot</th>
-<th data-quarto-table-cell-role="th">_abbreviation</th>
-<th data-quarto-table-cell-role="th">_classification</th>
-<th data-quarto-table-cell-role="th">_color</th>
-<th data-quarto-table-cell-role="th">_alt_color</th>
-<th data-quarto-table-cell-role="th">_logos</th>
-<th data-quarto-table-cell-role="th">_twitter</th>
-<th data-quarto-table-cell-role="th">_location</th>
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th">school</th>
+<th data-quarto-table-cell-role="th">mascot</th>
+<th data-quarto-table-cell-role="th">abbreviation</th>
+<th data-quarto-table-cell-role="th">alternate_names</th>
+<th data-quarto-table-cell-role="th">conference</th>
+<th data-quarto-table-cell-role="th">division</th>
+<th data-quarto-table-cell-role="th">classification</th>
+<th data-quarto-table-cell-role="th">color</th>
+<th data-quarto-table-cell-role="th">alternate_color</th>
 <th data-quarto-table-cell-role="th">...</th>
-<th data-quarto-table-cell-role="th">_percent_receiving_ppa</th>
-<th data-quarto-table-cell-role="th">_percent_rushing_ppa</th>
-<th data-quarto-table-cell-role="th">_usage</th>
-<th data-quarto-table-cell-role="th">_passing_usage</th>
-<th data-quarto-table-cell-role="th">_receiving_usage</th>
-<th data-quarto-table-cell-role="th">_rushing_usage</th>
-<th data-quarto-table-cell-role="th">_destination</th>
+<th data-quarto-table-cell-role="th">twitter</th>
+<th data-quarto-table-cell-role="th">location</th>
+<th data-quarto-table-cell-role="th">year</th>
+<th data-quarto-table-cell-role="th">team</th>
+<th data-quarto-table-cell-role="th">expected_wins</th>
+<th data-quarto-table-cell-role="th">destination</th>
+<th data-quarto-table-cell-role="th">season</th>
 <th data-quarto-table-cell-role="th">total_transfers_in</th>
-<th data-quarto-table-cell-role="th">_origin</th>
+<th data-quarto-table-cell-role="th">origin</th>
 <th data-quarto-table-cell-role="th">total_transfers_out</th>
 </tr>
 </thead>
@@ -840,124 +684,124 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>Air Force</td>
 <td>Falcons</td>
 <td>AFA</td>
+<td>[AFA, Air Force]</td>
+<td>Mountain West</td>
 <td>None</td>
+<td>fbs</td>
 <td>#004a7b</td>
 <td>#ffffff</td>
-<td>[http://a.espncdn.com/i/teamlogos/ncaa/500/200...</td>
-<td>@AF_Football</td>
-<td>{'capacity': 46692.0,\n 'city': 'Colorado Spri...</td>
 <td>...</td>
-<td>0.540</td>
-<td>0.724</td>
-<td>0.724</td>
-<td>1.000</td>
-<td>0.745</td>
-<td>0.662</td>
+<td>@AF_Football</td>
+<td>id=3713 name='Falcon Stadium' city='Colorado S...</td>
+<td>2021</td>
 <td>Air Force</td>
+<td>10.097382</td>
+<td>Air Force</td>
+<td>2021.0</td>
 <td>2.0</td>
 <td>Air Force</td>
-<td>2.0</td>
+<td>4.0</td>
 </tr>
 <tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>2005</td>
+<td>Air Force</td>
+<td>Falcons</td>
+<td>AFA</td>
+<td>[AFA, Air Force]</td>
+<td>Mountain West</td>
+<td>None</td>
+<td>fbs</td>
+<td>#004a7b</td>
+<td>#ffffff</td>
+<td>...</td>
+<td>@AF_Football</td>
+<td>id=3713 name='Falcon Stadium' city='Colorado S...</td>
+<td>2022</td>
+<td>Air Force</td>
+<td>10.945056</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>2005</td>
+<td>Air Force</td>
+<td>Falcons</td>
+<td>AFA</td>
+<td>[AFA, Air Force]</td>
+<td>Mountain West</td>
+<td>None</td>
+<td>fbs</td>
+<td>#004a7b</td>
+<td>#ffffff</td>
+<td>...</td>
+<td>@AF_Football</td>
+<td>id=3713 name='Falcon Stadium' city='Colorado S...</td>
+<td>2023</td>
+<td>Air Force</td>
+<td>10.725707</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>2005</td>
+<td>Air Force</td>
+<td>Falcons</td>
+<td>AFA</td>
+<td>[AFA, Air Force]</td>
+<td>Mountain West</td>
+<td>None</td>
+<td>fbs</td>
+<td>#004a7b</td>
+<td>#ffffff</td>
+<td>...</td>
+<td>@AF_Football</td>
+<td>id=3713 name='Falcon Stadium' city='Colorado S...</td>
+<td>2024</td>
+<td>Air Force</td>
+<td>6.003888</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
 <td data-quarto-table-cell-role="th">4</td>
 <td>2006</td>
 <td>Akron</td>
 <td>Zips</td>
 <td>AKR</td>
+<td>[AKR, Akron]</td>
+<td>Mid-American</td>
 <td>None</td>
+<td>fbs</td>
 <td>#00285e</td>
 <td>#84754e</td>
-<td>[http://a.espncdn.com/i/teamlogos/ncaa/500/200...</td>
-<td>@ZipsFB</td>
-<td>{'capacity': 30000.0,\n 'city': 'Akron',\n 'co...</td>
 <td>...</td>
-<td>0.545</td>
-<td>0.826</td>
-<td>0.805</td>
-<td>0.902</td>
-<td>0.694</td>
-<td>0.788</td>
+<td>@ZipsFB</td>
+<td>id=3768 name='InfoCision Stadium' city='Akron'...</td>
+<td>2021</td>
 <td>Akron</td>
+<td>2.934194</td>
+<td>Akron</td>
+<td>2021.0</td>
 <td>3.0</td>
 <td>Akron</td>
-<td>3.0</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">5</td>
-<td>2006</td>
-<td>Akron</td>
-<td>Zips</td>
-<td>AKR</td>
-<td>None</td>
-<td>#00285e</td>
-<td>#84754e</td>
-<td>[http://a.espncdn.com/i/teamlogos/ncaa/500/200...</td>
-<td>@ZipsFB</td>
-<td>{'capacity': 30000.0,\n 'city': 'Akron',\n 'co...</td>
-<td>...</td>
-<td>0.349</td>
-<td>0.155</td>
-<td>0.485</td>
-<td>0.343</td>
-<td>0.290</td>
-<td>0.806</td>
-<td>Akron</td>
-<td>15.0</td>
-<td>Akron</td>
-<td>4.0</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">6</td>
-<td>2006</td>
-<td>Akron</td>
-<td>Zips</td>
-<td>AKR</td>
-<td>None</td>
-<td>#00285e</td>
-<td>#84754e</td>
-<td>[http://a.espncdn.com/i/teamlogos/ncaa/500/200...</td>
-<td>@ZipsFB</td>
-<td>{'capacity': 30000.0,\n 'city': 'Akron',\n 'co...</td>
-<td>...</td>
-<td>0.614</td>
-<td>0.893</td>
-<td>0.758</td>
-<td>0.995</td>
-<td>0.573</td>
-<td>0.596</td>
-<td>Akron</td>
-<td>4.0</td>
-<td>Akron</td>
-<td>6.0</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">7</td>
-<td>2006</td>
-<td>Akron</td>
-<td>Zips</td>
-<td>AKR</td>
-<td>None</td>
-<td>#00285e</td>
-<td>#84754e</td>
-<td>[http://a.espncdn.com/i/teamlogos/ncaa/500/200...</td>
-<td>@ZipsFB</td>
-<td>{'capacity': 30000.0,\n 'city': 'Akron',\n 'co...</td>
-<td>...</td>
-<td>0.681</td>
-<td>0.490</td>
-<td>0.759</td>
-<td>0.994</td>
-<td>0.666</td>
-<td>0.525</td>
-<td>Akron</td>
-<td>15.0</td>
-<td>Akron</td>
-<td>16.0</td>
+<td>14.0</td>
 </tr>
 </tbody>
 </table>
 
-<p>5 rows × 46 columns</p>
+<p>5 rows × 21 columns</p>
 </div>
 </div>
 </div>
@@ -965,15 +809,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="exploratory-data-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="exploratory-data-analysis">Exploratory Data Analysis</h2>
 <p>Before going looking at how transfer are affecting production, I want to get more familiar with the data set and see if we can learn anything interesting in there.</p>
-<div id="cell-16" class="cell">
+<div id="cell-15" class="cell" data-execution_count="63">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>transfers_by_season <span class="op">=</span> df[[<span class="st">'_year'</span>, <span class="st">'total_transfers_in'</span>]].groupby(<span class="st">'_year'</span>).<span class="bu">sum</span>().reset_index()</span>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>transfers_by_season <span class="op">=</span> df[[<span class="st">'year'</span>, <span class="st">'total_transfers_in'</span>]].groupby(<span class="st">'year'</span>).<span class="bu">sum</span>().reset_index()</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>transfers_by_season[<span class="st">'pct_change'</span>] <span class="op">=</span> transfers_by_season[<span class="st">'total_transfers_in'</span>].pct_change() <span class="op">*</span> <span class="dv">100</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">7</span>))</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>bars <span class="op">=</span> plt.bar(transfers_by_season[<span class="st">'_year'</span>], transfers_by_season[<span class="st">'total_transfers_in'</span>], color<span class="op">=</span><span class="st">'#012d69'</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>bars <span class="op">=</span> plt.bar(transfers_by_season[<span class="st">'year'</span>], transfers_by_season[<span class="st">'total_transfers_in'</span>], color<span class="op">=</span><span class="st">'#012d69'</span>)</span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, bar <span class="kw">in</span> <span class="bu">enumerate</span>(bars):</span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">&gt;</span> <span class="dv">0</span>:</span>
@@ -981,12 +825,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        label <span class="op">=</span> <span class="ss">f"</span><span class="ch">\u25B2</span><span class="ss"> </span><span class="sc">{</span>pct_change<span class="sc">:.1f}</span><span class="ss">%"</span></span>
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        plt.text(bar.get_x() <span class="op">+</span> bar.get_width() <span class="op">/</span> <span class="dv">2</span>, bar.get_height() <span class="op">+</span> <span class="dv">10</span>, label, ha<span class="op">=</span><span class="st">'center'</span>, va<span class="op">=</span><span class="st">'bottom'</span>, color<span class="op">=</span><span class="st">'green'</span>)</span>
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>plt.xticks(ticks<span class="op">=</span>transfers_by_season[<span class="st">'_year'</span>])</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>plt.xticks(ticks<span class="op">=</span>transfers_by_season[<span class="st">'year'</span>])</span>
 <span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Season'</span>)</span>
 <span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Total Transfers'</span>)</span>
 <span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Transfers In Across FBS From 2021-2024'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="568">
+<div class="cell-output cell-output-display" data-execution_count="63">
 <pre><code>Text(0.5, 1.0, 'Transfers In Across FBS From 2021-2024')</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -999,17 +843,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Transfers have increased year over year each year this decade with no real signs of slowing down. Whatever effect is made from this new Transfer Portal is likely to continue to grow moving forward until some sort of equilibrium is found.</p>
 <p>But where are these transfers going?</p>
-<div id="cell-18" class="cell">
+<div id="cell-17" class="cell" data-execution_count="64">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>transfers_in_by_conference <span class="op">=</span> df[[<span class="st">'_conference'</span>, <span class="st">'total_transfers_in'</span>]].groupby(<span class="st">'_conference'</span>).<span class="bu">sum</span>().reset_index()</span>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>transfers_in_by_conference <span class="op">=</span> df[[<span class="st">'conference'</span>, <span class="st">'total_transfers_in'</span>]].groupby(<span class="st">'conference'</span>).<span class="bu">sum</span>().reset_index()</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>power_conferences <span class="op">=</span> [<span class="st">'ACC'</span>, <span class="st">'Big 12'</span>, <span class="st">'Big Ten'</span>, <span class="st">'Pac-12'</span>, <span class="st">'SEC'</span>]</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">7</span>))</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">'#ad0004'</span> <span class="cf">if</span> conference <span class="kw">in</span> power_conferences <span class="cf">else</span> <span class="st">'#012d69'</span> <span class="cf">for</span> conference <span class="kw">in</span> transfers_in_by_conference[<span class="st">'_conference'</span>]]</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">'#ad0004'</span> <span class="cf">if</span> conference <span class="kw">in</span> power_conferences <span class="cf">else</span> <span class="st">'#012d69'</span> <span class="cf">for</span> conference <span class="kw">in</span> transfers_in_by_conference[<span class="st">'conference'</span>]]</span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>bars <span class="op">=</span> plt.bar(transfers_in_by_conference[<span class="st">'_conference'</span>], transfers_in_by_conference[<span class="st">'total_transfers_in'</span>], color<span class="op">=</span>colors)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>bars <span class="op">=</span> plt.bar(transfers_in_by_conference[<span class="st">'conference'</span>], transfers_in_by_conference[<span class="st">'total_transfers_in'</span>], color<span class="op">=</span>colors)</span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, bar <span class="kw">in</span> <span class="bu">enumerate</span>(bars):</span>
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    transfers <span class="op">=</span> bar.get_height().astype(<span class="bu">int</span>)</span>
@@ -1021,7 +865,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Total Transfers'</span>)</span>
 <span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Transfers In by FBS Conference'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="569">
+<div class="cell-output cell-output-display" data-execution_count="64">
 <pre><code>Text(0.5, 1.0, 'Transfers In by FBS Conference')</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -1034,17 +878,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>This chart surprises me a bit. I would have expected that all of the Power Five conferences would be head and shoulders above all of the Group of Five conferences. In reality, the top end of G5 conferences are getting nearly as many transfers, if not more, than the Power Five conferences. Also, what are they doing in the AAC?</p>
 <p>A quick point about conference realignment: because our data is up to the 2024 offseason, teams that played their first season in their new conference in 2024 are still counted towards their original conference. If they played a season in their new conference prior to 2024, those changes are accurately reflected. For example, all Washington and Oregon data still count towards the Pac-12, all Texas and Oklahoma data still count towards the Big 12. But 2021-2023 BYU counts towards FBS Independents, but 2024 BYU counts towards the Big 12.</p>
-<div id="cell-20" class="cell">
+<div id="cell-19" class="cell" data-execution_count="74">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>transfers <span class="op">=</span> pd.DataFrame(transfer_dicts) <span class="co"># Remake transfers data frame without aggregation</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>transfers <span class="op">=</span> transfers.groupby(<span class="st">'_destination'</span>).agg({<span class="st">'_stars'</span>: <span class="st">'mean'</span>, <span class="st">'_season'</span>: <span class="st">'count'</span>}).rename({<span class="st">'_season'</span>: <span class="st">'total_transfers_in'</span>, <span class="st">'_stars'</span>: <span class="st">'avg_stars'</span>}, axis<span class="op">=</span><span class="dv">1</span>).reset_index()</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>transfers <span class="op">=</span> transfers.groupby(<span class="st">'destination'</span>).agg({<span class="st">'stars'</span>: <span class="st">'mean'</span>, <span class="st">'season'</span>: <span class="st">'count'</span>}).rename({<span class="st">'season'</span>: <span class="st">'total_transfers_in'</span>, <span class="st">'stars'</span>: <span class="st">'avg_stars'</span>}, axis<span class="op">=</span><span class="dv">1</span>).reset_index()</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>transfers <span class="op">=</span> transfers.merge(teams_df[[<span class="st">'_id'</span>, <span class="st">'_school'</span>, <span class="st">'_conference'</span>]], how<span class="op">=</span><span class="st">'inner'</span>, left_on<span class="op">=</span>[<span class="st">'_destination'</span>], right_on<span class="op">=</span>[<span class="st">'_school'</span>]).drop(<span class="st">'_school'</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>transfers <span class="op">=</span> transfers.merge(teams_df[[<span class="st">'id'</span>, <span class="st">'school'</span>, <span class="st">'conference'</span>]], how<span class="op">=</span><span class="st">'inner'</span>, left_on<span class="op">=</span>[<span class="st">'destination'</span>], right_on<span class="op">=</span>[<span class="st">'school'</span>]).drop(<span class="st">'school'</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>power_five_transfers <span class="op">=</span> transfers[transfers[<span class="st">'_conference'</span>].isin(power_conferences) <span class="op">|</span> transfers[<span class="st">'_destination'</span>].<span class="bu">str</span>.contains(<span class="st">'Notre Dame'</span>)]</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>g5_transfers <span class="op">=</span> transfers[<span class="op">~</span>transfers[<span class="st">'_conference'</span>].isin(power_conferences) <span class="op">&amp;</span> <span class="op">~</span>transfers[<span class="st">'_destination'</span>].<span class="bu">str</span>.contains(<span class="st">'Notre Dame'</span>)]</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>power_five_transfers <span class="op">=</span> transfers[transfers[<span class="st">'conference'</span>].isin(power_conferences) <span class="op">|</span> transfers[<span class="st">'destination'</span>].<span class="bu">str</span>.contains(<span class="st">'Notre Dame'</span>)]</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>g5_transfers <span class="op">=</span> transfers[<span class="op">~</span>transfers[<span class="st">'conference'</span>].isin(power_conferences) <span class="op">&amp;</span> <span class="op">~</span>transfers[<span class="st">'destination'</span>].<span class="bu">str</span>.contains(<span class="st">'Notre Dame'</span>)]</span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to get logos from image folder. Variable 'logos_folder' is defined in the hidden cell</span></span>
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co"># with API config. It is a local file path</span></span>
@@ -1056,14 +900,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].scatter(power_five_transfers[<span class="st">'avg_stars'</span>], power_five_transfers[<span class="st">'total_transfers_in'</span>], alpha<span class="op">=</span><span class="dv">0</span>)</span>
 <span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Bind logo to data point</span></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x0, y0, <span class="bu">id</span> <span class="kw">in</span> <span class="bu">zip</span>(power_five_transfers[<span class="st">'avg_stars'</span>], power_five_transfers[<span class="st">'total_transfers_in'</span>], power_five_transfers[<span class="st">'_id'</span>]):</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x0, y0, <span class="bu">id</span> <span class="kw">in</span> <span class="bu">zip</span>(power_five_transfers[<span class="st">'avg_stars'</span>], power_five_transfers[<span class="st">'total_transfers_in'</span>], power_five_transfers[<span class="st">'id'</span>]):</span>
 <span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    ab <span class="op">=</span> AnnotationBbox(get_image_path(<span class="bu">id</span>), (x0, y0), frameon<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    ax[<span class="dv">0</span>].add_artist(ab)</span>
 <span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].axvline(power_five_transfers[<span class="st">'avg_stars'</span>].mean(), color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
 <span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].axhline(power_five_transfers[<span class="st">'total_transfers_in'</span>].mean(), color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
 <span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_xlabel(<span class="st">'Average Stars'</span>)</span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_ylabel(<span class="st">'Total Transfers'</span>)</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_ylabel(<span class="st">'Total Transfers In'</span>)</span>
 <span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_xlim(<span class="fl">2.7</span>, <span class="fl">3.7</span>)</span>
 <span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_ylim(<span class="dv">0</span>, <span class="dv">105</span>)</span>
 <span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_title(<span class="st">'Power Five Transfers In (2021-2024)'</span>)</span>
@@ -1071,14 +915,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].scatter(g5_transfers[<span class="st">'avg_stars'</span>], g5_transfers[<span class="st">'total_transfers_in'</span>], alpha<span class="op">=</span><span class="dv">0</span>)</span>
 <span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x0, y0, <span class="bu">id</span> <span class="kw">in</span> <span class="bu">zip</span>(g5_transfers[<span class="st">'avg_stars'</span>], g5_transfers[<span class="st">'total_transfers_in'</span>], g5_transfers[<span class="st">'_id'</span>]):</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x0, y0, <span class="bu">id</span> <span class="kw">in</span> <span class="bu">zip</span>(g5_transfers[<span class="st">'avg_stars'</span>], g5_transfers[<span class="st">'total_transfers_in'</span>], g5_transfers[<span class="st">'id'</span>]):</span>
 <span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>    ab <span class="op">=</span> AnnotationBbox(get_image_path(<span class="bu">id</span>), (x0, y0), frameon<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>    ax[<span class="dv">1</span>].add_artist(ab)</span>
 <span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].axvline(g5_transfers[<span class="st">'avg_stars'</span>].mean(), color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
 <span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].axhline(g5_transfers[<span class="st">'total_transfers_in'</span>].mean(), color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
 <span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_xlabel(<span class="st">'Average Stars'</span>)</span>
-<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_ylabel(<span class="st">'Total Transfers'</span>)</span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_ylabel(<span class="st">'Total Transfers In'</span>)</span>
 <span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_xlim(<span class="fl">2.7</span>, <span class="fl">3.7</span>)</span>
 <span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_ylim(<span class="dv">0</span>, <span class="dv">105</span>)</span>
 <span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_title(<span class="st">'G5 Transfers In (2021-2024)'</span>)</span>
@@ -1139,15 +983,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="are-g5-schools-getting-picked-clean" class="level2">
 <h2 class="anchored" data-anchor-id="are-g5-schools-getting-picked-clean">Are G5 Schools Getting Picked Clean?</h2>
 <p>We’ve talked a good bit about transfers but what about transfers out? As we discussed earlier, however, coaches at the G5 level often claim that their teams are scavenged by larger schools. We’ve already established that there are roughly the same quantity of transfers across levels and that power conference teams tend to get the better players, but that doesn’t necessarily tell me whether or not G5 teams are losing their best players. It’s reasonable to think that the better players are already at the Power Five teams. Perhaps the player movement is just players going from P5 to P5 or from G5 to G5.</p>
-<div id="cell-22" class="cell">
+<div id="cell-21" class="cell" data-execution_count="66">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>transfers_out_by_conference <span class="op">=</span> df[[<span class="st">'_conference'</span>, <span class="st">'total_transfers_out'</span>]].groupby(<span class="st">'_conference'</span>).<span class="bu">sum</span>().reset_index()</span>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>transfers_out_by_conference <span class="op">=</span> df[[<span class="st">'conference'</span>, <span class="st">'total_transfers_out'</span>]].groupby(<span class="st">'conference'</span>).<span class="bu">sum</span>().reset_index()</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">7</span>))</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">'#ad0004'</span> <span class="cf">if</span> conference <span class="kw">in</span> power_conferences <span class="cf">else</span> <span class="st">'#012d69'</span> <span class="cf">for</span> conference <span class="kw">in</span> transfers_out_by_conference[<span class="st">'_conference'</span>]]</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">'#ad0004'</span> <span class="cf">if</span> conference <span class="kw">in</span> power_conferences <span class="cf">else</span> <span class="st">'#012d69'</span> <span class="cf">for</span> conference <span class="kw">in</span> transfers_out_by_conference[<span class="st">'conference'</span>]]</span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>bars <span class="op">=</span> plt.bar(transfers_out_by_conference[<span class="st">'_conference'</span>], transfers_out_by_conference[<span class="st">'total_transfers_out'</span>], color<span class="op">=</span>colors)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>bars <span class="op">=</span> plt.bar(transfers_out_by_conference[<span class="st">'conference'</span>], transfers_out_by_conference[<span class="st">'total_transfers_out'</span>], color<span class="op">=</span>colors)</span>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, bar <span class="kw">in</span> <span class="bu">enumerate</span>(bars):</span>
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    transfers_number <span class="op">=</span> bar.get_height().astype(<span class="bu">int</span>)</span>
@@ -1159,7 +1003,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Total Transfers'</span>)</span>
 <span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Transfers Out by FBS Conference'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="571">
+<div class="cell-output cell-output-display" data-execution_count="66">
 <pre><code>Text(0.5, 1.0, 'Transfers Out by FBS Conference')</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -1170,34 +1014,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Another surprise here from this chart. I would have expected that power conference teams have less roster turnover from the transfer portal. My thinking was that the players are at or near the pinnacle of college football, so they would be more likely to stay. That does not appear to be the case. Again, the AAC is an exception here, but other than them, all Power 5 conferences have more transfers out than the G5 conferences.</p>
+<p>Another surprise here from this chart. I would have expected that power conference teams have less roster turnover from the transfer portal. My thinking was that the players are at or near the pinnacle of college football, so they would be more likely to stay. That does not appear to be the case. There are far more players transferring out of the Power 5 than there are players transferring out of the lower levels of FBS.</p>
 <p>One thing that I think is interesting to note here is that there are a lot more players transferring out of FBS than are transferring in to FBS. This tells me that there are a lot of players going to FCS, DII, DIII, or NAIA schools. Hold on to this thought. I’m going to come back to that in a second.</p>
 <p>So, how about the quality of the players transferring out? I think it is important to think about the quality of players that are already at each level again. P5 schools are going to naturally have better quality players. But if there is some similarity to level of player transferring out between P5 and G5, then it lends some credence to the idea that G5 teams are getting poached.</p>
-<div id="cell-24" class="cell">
+<div id="cell-23" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>transfers_out <span class="op">=</span> pd.DataFrame(transfer_dicts) <span class="co"># Remake transfers data frame without aggregation</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>transfers_out <span class="op">=</span> transfers_out.dropna(subset<span class="op">=</span>[<span class="st">'_origin'</span>, <span class="st">'_destination'</span>])</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>transfers_out <span class="op">=</span> transfers_out.dropna(subset<span class="op">=</span>[<span class="st">'origin'</span>, <span class="st">'destination'</span>])</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>transfers_out <span class="op">=</span> transfers_out.groupby(<span class="st">'_origin'</span>).agg({<span class="st">'_stars'</span>: <span class="st">'mean'</span>, <span class="st">'_season'</span>: <span class="st">'count'</span>}).rename({<span class="st">'_season'</span>: <span class="st">'total_transfers_out'</span>, <span class="st">'_stars'</span>: <span class="st">'avg_stars'</span>}, axis<span class="op">=</span><span class="dv">1</span>).reset_index()</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>transfers_out <span class="op">=</span> transfers_out.groupby(<span class="st">'origin'</span>).agg({<span class="st">'stars'</span>: <span class="st">'mean'</span>, <span class="st">'season'</span>: <span class="st">'count'</span>}).rename({<span class="st">'season'</span>: <span class="st">'total_transfers_out'</span>, <span class="st">'stars'</span>: <span class="st">'avg_stars'</span>}, axis<span class="op">=</span><span class="dv">1</span>).reset_index()</span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>transfers_out <span class="op">=</span> transfers_out.merge(teams_df[[<span class="st">'_id'</span>, <span class="st">'_school'</span>, <span class="st">'_conference'</span>]], how<span class="op">=</span><span class="st">'inner'</span>, left_on<span class="op">=</span>[<span class="st">'_origin'</span>], right_on<span class="op">=</span>[<span class="st">'_school'</span>]).drop(<span class="st">'_school'</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>transfers_out <span class="op">=</span> transfers_out.merge(teams_df[[<span class="st">'id'</span>, <span class="st">'school'</span>, <span class="st">'conference'</span>]], how<span class="op">=</span><span class="st">'inner'</span>, left_on<span class="op">=</span>[<span class="st">'origin'</span>], right_on<span class="op">=</span>[<span class="st">'school'</span>]).drop(<span class="st">'school'</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>power_five_transfers <span class="op">=</span> transfers_out[transfers_out[<span class="st">'_conference'</span>].isin(power_conferences) <span class="op">|</span> transfers_out[<span class="st">'_origin'</span>].<span class="bu">str</span>.contains(<span class="st">'Notre Dame'</span>)]</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>g5_transfers <span class="op">=</span> transfers_out[<span class="op">~</span>transfers_out[<span class="st">'_conference'</span>].isin(power_conferences) <span class="op">&amp;</span> <span class="op">~</span>transfers_out[<span class="st">'_origin'</span>].<span class="bu">str</span>.contains(<span class="st">'Notre Dame'</span>)]</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>power_five_transfers <span class="op">=</span> transfers_out[transfers_out[<span class="st">'conference'</span>].isin(power_conferences) <span class="op">|</span> transfers_out[<span class="st">'origin'</span>].<span class="bu">str</span>.contains(<span class="st">'Notre Dame'</span>)]</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>g5_transfers <span class="op">=</span> transfers_out[<span class="op">~</span>transfers_out[<span class="st">'conference'</span>].isin(power_conferences) <span class="op">&amp;</span> <span class="op">~</span>transfers_out[<span class="st">'origin'</span>].<span class="bu">str</span>.contains(<span class="st">'Notre Dame'</span>)]</span>
 <span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="co">#Scatter plots</span></span>
 <span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(nrows<span class="op">=</span><span class="dv">1</span>, ncols<span class="op">=</span><span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">7</span>))</span>
 <span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].scatter(power_five_transfers[<span class="st">'avg_stars'</span>], power_five_transfers[<span class="st">'total_transfers_out'</span>], alpha<span class="op">=</span><span class="dv">0</span>)</span>
 <span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x0, y0, <span class="bu">id</span> <span class="kw">in</span> <span class="bu">zip</span>(power_five_transfers[<span class="st">'avg_stars'</span>], power_five_transfers[<span class="st">'total_transfers_out'</span>], power_five_transfers[<span class="st">'_id'</span>]):</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x0, y0, <span class="bu">id</span> <span class="kw">in</span> <span class="bu">zip</span>(power_five_transfers[<span class="st">'avg_stars'</span>], power_five_transfers[<span class="st">'total_transfers_out'</span>], power_five_transfers[<span class="st">'id'</span>]):</span>
 <span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    ab <span class="op">=</span> AnnotationBbox(get_image_path(<span class="bu">id</span>), (x0, y0), frameon<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>    ax[<span class="dv">0</span>].add_artist(ab)</span>
 <span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].axvline(power_five_transfers[<span class="st">'avg_stars'</span>].mean(), color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
 <span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].axhline(power_five_transfers[<span class="st">'total_transfers_out'</span>].mean(), color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
 <span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_xlabel(<span class="st">'Average Stars'</span>)</span>
-<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_ylabel(<span class="st">'Total Transfers'</span>)</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_ylabel(<span class="st">'Total Transfers Out'</span>)</span>
 <span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_xlim(<span class="fl">2.5</span>, <span class="fl">3.5</span>)</span>
 <span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_ylim(<span class="fl">4.5</span>, <span class="dv">110</span>)</span>
 <span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_title(<span class="st">'Power Five Transfers Out (2021-2024)'</span>)</span>
@@ -1205,14 +1049,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].scatter(g5_transfers[<span class="st">'avg_stars'</span>], g5_transfers[<span class="st">'total_transfers_out'</span>], alpha<span class="op">=</span><span class="dv">0</span>)</span>
 <span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x0, y0, <span class="bu">id</span> <span class="kw">in</span> <span class="bu">zip</span>(g5_transfers[<span class="st">'avg_stars'</span>], g5_transfers[<span class="st">'total_transfers_out'</span>], g5_transfers[<span class="st">'_id'</span>]):</span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x0, y0, <span class="bu">id</span> <span class="kw">in</span> <span class="bu">zip</span>(g5_transfers[<span class="st">'avg_stars'</span>], g5_transfers[<span class="st">'total_transfers_out'</span>], g5_transfers[<span class="st">'id'</span>]):</span>
 <span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>    ab <span class="op">=</span> AnnotationBbox(get_image_path(<span class="bu">id</span>), (x0, y0), frameon<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>    ax[<span class="dv">1</span>].add_artist(ab)</span>
 <span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].axvline(g5_transfers[<span class="st">'avg_stars'</span>].mean(), color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
 <span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].axhline(g5_transfers[<span class="st">'total_transfers_out'</span>].mean(), color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
 <span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_xlabel(<span class="st">'Average Stars'</span>)</span>
-<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_ylabel(<span class="st">'Total Transfers'</span>)</span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_ylabel(<span class="st">'Total Transfers Out'</span>)</span>
 <span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_xlim(<span class="fl">2.5</span>, <span class="fl">3.5</span>)</span>
 <span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_ylim(<span class="fl">4.5</span>, <span class="dv">110</span>)</span>
 <span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_title(<span class="st">'G5 Transfers Out (2021-2024)'</span>)</span>
@@ -1266,113 +1110,66 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>Cohen's D: 1.89</code></pre>
 </div>
 </div>
-<p>These charts tell me that there is a lot of movement within P5 and G5 and, if anything, there are more players going from the Power 5 level to the Group of 5 level. If the number of players coming in are equal and the number of players going out from P5 schools is greater than the number of players going out from G5 schools, that necessarily means that more players are going from P5 to G5 than vise versa.</p>
-<p>Further, and perhaps more importantly, is the Cohen’s D value that we are getting. The effect size of players transferring <em>in</em> was 1.6 indicating stronger players coming in to Power 5 schools. However, the effect size of players transferring <em>out</em> of Power 5 schools is even strong at <strong>1.89</strong>. Obviously there are prep recruits to consider when thinking about the makeup of a college football team, but as far as the transfer portal is concerned Power Five schools have been operating a net talent loss.</p>
-<div id="cell-26" class="cell">
+<p>So, we can tell for certain that there are more players transferring out of the Power Five than there are players transferring out of the G5, and that those players who are leaving the P5 are better. That is to be expected. Perhaps more importantly, however, is the Cohen’s D value that we are getting. The effect size of players transferring <em>in</em> was 1.6 indicating stronger players coming in to Power 5 schools. The effect size of players transferring <em>out</em> of Power 5 schools is even strong at <strong>1.89</strong>.</p>
+<div id="cell-25" class="cell" data-execution_count="73">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>transfers_in <span class="op">=</span> transfers.rename({<span class="st">'avg_stars'</span>: <span class="st">'avg_stars_in'</span>}, axis<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>transfers_out <span class="op">=</span> transfers_out.rename({<span class="st">'avg_stars'</span>: <span class="st">'avg_stars_out'</span>}, axis<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>transfers_by_team <span class="op">=</span> transfers_in.merge(transfers_out, how<span class="op">=</span><span class="st">'left'</span>, on<span class="op">=</span><span class="st">'_id'</span>).drop([<span class="st">'_conference_y'</span>, <span class="st">'_origin'</span>], axis<span class="op">=</span><span class="dv">1</span>).rename({<span class="st">'_conference_x'</span>: <span class="st">'_conference'</span>, <span class="st">'_destination'</span>: <span class="st">'team'</span>}, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>transfers_by_team <span class="op">=</span> transfers_in.merge(transfers_out, how<span class="op">=</span><span class="st">'left'</span>, on<span class="op">=</span><span class="st">'id'</span>).drop([<span class="st">'conference_y'</span>, <span class="st">'origin'</span>], axis<span class="op">=</span><span class="dv">1</span>).rename({<span class="st">'conference_x'</span>: <span class="st">'conference'</span>, <span class="st">'destination'</span>: <span class="st">'team'</span>}, axis<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>transfers_by_team[<span class="st">'net_stars'</span>] <span class="op">=</span> transfers_by_team[<span class="st">'avg_stars_in'</span>] <span class="op">-</span> transfers_by_team[<span class="st">'avg_stars_out'</span>]</span>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>transfers_by_team[<span class="st">'net_transfers'</span>] <span class="op">=</span> transfers_by_team[<span class="st">'total_transfers_in'</span>] <span class="op">-</span> transfers_by_team[<span class="st">'total_transfers_out'</span>]</span>
 <span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>p5_transfers <span class="op">=</span> transfers_by_team[transfers_by_team[<span class="st">'_conference'</span>].isin(power_conferences) <span class="op">|</span> transfers_by_team[<span class="st">'team'</span>].<span class="bu">str</span>.contains(<span class="st">'Notre Dame'</span>)]</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>g5_transfers <span class="op">=</span> transfers_by_team[<span class="op">~</span>transfers_by_team[<span class="st">'_conference'</span>].isin(power_conferences) <span class="op">&amp;</span> <span class="op">~</span>transfers_by_team[<span class="st">'team'</span>].<span class="bu">str</span>.contains(<span class="st">'Notre Dame'</span>)]</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>p5_transfers <span class="op">=</span> transfers_by_team[transfers_by_team[<span class="st">'conference'</span>].isin(power_conferences) <span class="op">|</span> transfers_by_team[<span class="st">'team'</span>].<span class="bu">str</span>.contains(<span class="st">'Notre Dame'</span>)]</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>g5_transfers <span class="op">=</span> transfers_by_team[<span class="op">~</span>transfers_by_team[<span class="st">'conference'</span>].isin(power_conferences) <span class="op">&amp;</span> <span class="op">~</span>transfers_by_team[<span class="st">'team'</span>].<span class="bu">str</span>.contains(<span class="st">'Notre Dame'</span>)]</span>
 <span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(nrows<span class="op">=</span><span class="dv">1</span>, ncols<span class="op">=</span><span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">7</span>))</span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].scatter(p5_transfers[<span class="st">'avg_stars_in'</span>], p5_transfers[<span class="st">'avg_stars_out'</span>], alpha<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x0, y0, <span class="bu">id</span> <span class="kw">in</span> <span class="bu">zip</span>(p5_transfers[<span class="st">'avg_stars_in'</span>], p5_transfers[<span class="st">'avg_stars_out'</span>], p5_transfers[<span class="st">'_id'</span>]):</span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    ab <span class="op">=</span> AnnotationBbox(get_image_path(<span class="bu">id</span>), (x0, y0), frameon<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    ax[<span class="dv">0</span>].add_artist(ab)</span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_xlabel(<span class="st">'Average Stars In'</span>)</span>
-<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_ylabel(<span class="st">'Average Stars Out'</span>)</span>
-<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].annotate(<span class="st">'Better players out'</span>, xy<span class="op">=</span>(<span class="fl">2.75</span>, <span class="fl">3.4</span>))</span>
-<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].annotate(<span class="st">'Better players in'</span>, xy<span class="op">=</span>(<span class="fl">3.4</span>, <span class="fl">2.8</span>))</span>
-<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_xlim(<span class="fl">2.7</span>, <span class="fl">3.7</span>)</span>
-<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_ylim(<span class="fl">2.5</span>, <span class="fl">3.5</span>)</span>
-<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].axline(xy1<span class="op">=</span>(<span class="fl">2.7</span>, <span class="fl">2.7</span>), slope<span class="op">=</span><span class="dv">1</span>, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
-<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_title(<span class="st">'Power Five Transfers (2021-2024)'</span>)</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].scatter(p5_transfers[<span class="st">'net_transfers'</span>], p5_transfers[<span class="st">'net_stars'</span>], alpha<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x0, y0, <span class="bu">id</span> <span class="kw">in</span> <span class="bu">zip</span>(p5_transfers[<span class="st">'net_transfers'</span>], p5_transfers[<span class="st">'net_stars'</span>], p5_transfers[<span class="st">'id'</span>]):</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    ab <span class="op">=</span> AnnotationBbox(get_image_path(<span class="bu">id</span>), (x0, y0), frameon<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>    ax[<span class="dv">0</span>].add_artist(ab)</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_xlabel(<span class="st">'Net Transfers'</span>)</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_ylabel(<span class="st">'Net Average Stars'</span>)</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_title(<span class="st">'Power Five Net Transfers (2021-2024)'</span>)</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'red'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'red'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_xlim(<span class="op">-</span><span class="dv">55</span>, <span class="dv">70</span>)</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_ylim(<span class="op">-</span><span class="fl">0.3</span>, <span class="fl">.5</span>)</span>
 <span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].grid(<span class="va">True</span>)</span>
 <span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].scatter(g5_transfers[<span class="st">'avg_stars_in'</span>], g5_transfers[<span class="st">'avg_stars_out'</span>], alpha<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x0, y0, <span class="bu">id</span> <span class="kw">in</span> <span class="bu">zip</span>(g5_transfers[<span class="st">'avg_stars_in'</span>], g5_transfers[<span class="st">'avg_stars_out'</span>], g5_transfers[<span class="st">'_id'</span>]):</span>
-<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>    ab <span class="op">=</span> AnnotationBbox(get_image_path(<span class="bu">id</span>), (x0, y0), frameon<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>    ax[<span class="dv">1</span>].add_artist(ab)</span>
-<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_xlabel(<span class="st">'Average Stars In'</span>)</span>
-<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_ylabel(<span class="st">'Average Stars Out'</span>)</span>
-<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_xlim(<span class="fl">2.7</span>, <span class="fl">3.7</span>)</span>
-<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_ylim(<span class="fl">2.5</span>, <span class="fl">3.5</span>)</span>
-<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].annotate(<span class="st">'Better players out'</span>, xy<span class="op">=</span>(<span class="fl">2.75</span>, <span class="fl">3.4</span>))</span>
-<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].annotate(<span class="st">'Better players in'</span>, xy<span class="op">=</span>(<span class="fl">3.4</span>, <span class="fl">2.8</span>))</span>
-<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].axline(xy1<span class="op">=</span>(<span class="fl">2.7</span>, <span class="fl">2.7</span>), slope<span class="op">=</span><span class="dv">1</span>, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
-<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_title(<span class="st">'G5 Transfers (2021-2024)'</span>)</span>
-<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].grid(<span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].scatter(g5_transfers[<span class="st">'net_transfers'</span>], g5_transfers[<span class="st">'net_stars'</span>], alpha<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x0, y0, <span class="bu">id</span> <span class="kw">in</span> <span class="bu">zip</span>(g5_transfers[<span class="st">'net_transfers'</span>], g5_transfers[<span class="st">'net_stars'</span>], g5_transfers[<span class="st">'id'</span>]):</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>    ab <span class="op">=</span> AnnotationBbox(get_image_path(<span class="bu">id</span>), (x0, y0), frameon<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>    ax[<span class="dv">1</span>].add_artist(ab)</span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_xlabel(<span class="st">'Net Transfers'</span>)</span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_ylabel(<span class="st">'Net Average Stars'</span>)</span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_title(<span class="st">'G5 Net Transfers (2021-2024)'</span>)</span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'red'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'red'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_xlim(<span class="op">-</span><span class="dv">55</span>, <span class="dv">70</span>)</span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_ylim(<span class="op">-</span><span class="fl">0.3</span>, <span class="fl">.5</span>)</span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].grid(<span class="va">True</span>)</span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Power Five Average Net Transfers: </span><span class="sc">{</span>p5_transfers[<span class="st">'net_transfers'</span>]<span class="sc">.</span>mean()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"G5 Average Net Transfers: </span><span class="sc">{</span>g5_transfers[<span class="st">'net_transfers'</span>]<span class="sc">.</span>mean()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Power Five Average Net Stars: </span><span class="sc">{</span>p5_transfers[<span class="st">'net_stars'</span>]<span class="sc">.</span>mean()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"G5 Average Net Stars: </span><span class="sc">{</span>g5_transfers[<span class="st">'net_stars'</span>]<span class="sc">.</span>mean()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
 <p><img src="an-honest-conversation-about-the-transfer-portal_files/figure-html/cell-15-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>This plot broke my brain a bit. How is it possible that so many Power Five teams have better players coming in than going out, if we know that there are more players transferring away from the P5 than there are transferring to the G5? Until I saw that damned Script A again that has shown up in a class of its own on every plot that I’ve made so far.</p>
-<div id="cell-28" class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(nrows<span class="op">=</span><span class="dv">1</span>, ncols<span class="op">=</span><span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">7</span>))</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].scatter(p5_transfers[<span class="st">'net_transfers'</span>], p5_transfers[<span class="st">'net_stars'</span>], alpha<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x0, y0, <span class="bu">id</span> <span class="kw">in</span> <span class="bu">zip</span>(p5_transfers[<span class="st">'net_transfers'</span>], p5_transfers[<span class="st">'net_stars'</span>], p5_transfers[<span class="st">'_id'</span>]):</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    ab <span class="op">=</span> AnnotationBbox(get_image_path(<span class="bu">id</span>), (x0, y0), frameon<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    ax[<span class="dv">0</span>].add_artist(ab)</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_xlabel(<span class="st">'Net Transfers'</span>)</span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_ylabel(<span class="st">'Net Average Stars'</span>)</span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_title(<span class="st">'Power Five Net Transfers (2021-2024)'</span>)</span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'red'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'red'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_xlim(<span class="op">-</span><span class="dv">55</span>, <span class="dv">70</span>)</span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_ylim(<span class="op">-</span><span class="fl">0.3</span>, <span class="fl">.5</span>)</span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].grid(<span class="va">True</span>)</span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].scatter(g5_transfers[<span class="st">'net_transfers'</span>], g5_transfers[<span class="st">'net_stars'</span>], alpha<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x0, y0, <span class="bu">id</span> <span class="kw">in</span> <span class="bu">zip</span>(g5_transfers[<span class="st">'net_transfers'</span>], g5_transfers[<span class="st">'net_stars'</span>], g5_transfers[<span class="st">'_id'</span>]):</span>
-<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>    ab <span class="op">=</span> AnnotationBbox(get_image_path(<span class="bu">id</span>), (x0, y0), frameon<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>    ax[<span class="dv">1</span>].add_artist(ab)</span>
-<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_xlabel(<span class="st">'Net Transfers'</span>)</span>
-<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_ylabel(<span class="st">'Net Average Stars'</span>)</span>
-<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_title(<span class="st">'G5 Net Transfers (2021-2024)'</span>)</span>
-<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'red'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
-<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'red'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
-<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_xlim(<span class="op">-</span><span class="dv">55</span>, <span class="dv">70</span>)</span>
-<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_ylim(<span class="op">-</span><span class="fl">0.3</span>, <span class="fl">.5</span>)</span>
-<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].grid(<span class="va">True</span>)</span>
-<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Power Five Average Net Transfers: </span><span class="sc">{</span>p5_transfers[<span class="st">'net_transfers'</span>]<span class="sc">.</span>mean()<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"G5 Average Net Transfers: </span><span class="sc">{</span>g5_transfers[<span class="st">'net_transfers'</span>]<span class="sc">.</span>mean()<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Power Five Average Net Stars: </span><span class="sc">{</span>p5_transfers[<span class="st">'net_stars'</span>]<span class="sc">.</span>mean()<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"G5 Average Net Stars: </span><span class="sc">{</span>g5_transfers[<span class="st">'net_stars'</span>]<span class="sc">.</span>mean()<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="an-honest-conversation-about-the-transfer-portal_files/figure-html/cell-16-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1383,6 +1180,8 @@ Power Five Average Net Stars: 0.05454902936543176
 G5 Average Net Stars: 0.03710712681054378</code></pre>
 </div>
 </div>
+<p>The above plot summarizes my point the best: on a single-player basis, the top end of the Power Five teams are gaining stars. If you pick a random player from a CFP contender, they may be a four or five star while if you pick a random player from an average C-USA team, they might be a two or three star.</p>
+<p>On the aggregate, however, Group of Five teams are outperforming Power Five teams in the transfer portal. Most P5 programs are losing more players to the portal than they are bringing in, while most Group of Five teams are bringing in more transfers than are leaving their teams. And the players that are coming in to the G5 schools are generally better than those that left.</p>
 <p>Power Five schools are losing, on average, 13.56 players to the transfer portal each year while Group of Five teams are <em>gaining</em> 8.37 players per year. So while the average stars of the players coming in to a P5 school is increasing, the number of bodies available for that team, through the transfer portal, is decreasing. Meanwhile, G5 schools are actually getting more, better players through the transfer portal.</p>
 </section>
 <section id="who-is-really-hurt-by-this" class="level2">
