@@ -60,7 +60,21 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "About this blog"
+    "text": "I’m curious about a lot of things. Some of them sports, some of them tech, some of them other things.\nThis is where I write about how I learn about those things."
+  },
+  {
+    "objectID": "about.html#education",
+    "href": "about.html#education",
+    "title": "About",
+    "section": "Education",
+    "text": "Education\nUniversity of Northern Iowa | Cedar Falls, IA BA in Sports Public Relations 3.6 GPA\nDes Moines Area Community College | Ankeny, IA AS in Computer Languages Data Science Certification Python App Development Certification SQL Development Certification C# App Development Certification Java App Development Certification Honors Student, 4.0 GPA"
+  },
+  {
+    "objectID": "about.html#experience",
+    "href": "about.html#experience",
+    "title": "About",
+    "section": "Experience",
+    "text": "Experience\nBest Fit Sports Data | Founder | April 2024-Present\nBright Spot Splicing | Fiber Optic Splicer | June 2023-April 2024\nPDM Financial | Lead Account Manager | May 2021-January 2023"
   },
   {
     "objectID": "posts/a-look-at-the-thunder-defense/a-look-at-the-thunder-defense.html",
