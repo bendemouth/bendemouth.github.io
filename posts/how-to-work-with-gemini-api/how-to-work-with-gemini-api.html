@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2025-03-14">
+<meta name="description" content="It’s time we took an honest look at who is hurt most by the transfer portal">
 
-<title>bendemouth.github.io</title>
+<title>How To Work with Gemini API – bendemouth.github.io</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,27 +22,59 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-ddd961a2510921635943dfbbd19534c4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ddd961a2510921635943dfbbd19534c4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -68,77 +102,19 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">bendemouth.github.io</span>
     </a>
   </div>
@@ -149,7 +125,7 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
@@ -172,179 +148,152 @@ window.Quarto = {
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">bendemouth.github.io</h1>
-                      </div>
+    <div class="quarto-title column-body">
+      <h1 class="title">How To Work with Gemini API</h1>
+                  <div>
+        <div class="description">
+          It’s time we took an honest look at who is hurt most by the transfer portal
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">AI</div>
+                <div class="quarto-category">LLMs</div>
+                <div class="quarto-category">Google Gemini</div>
+              </div>
+                  </div>
   </div>
     
   
-  <div class="quarto-title-meta column-page-left">
+  <div class="quarto-title-meta">
 
       
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">March 14, 2025</p>
+      </div>
+    </div>
     
       
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(4)</span></div><div class="category" data-category="QUk=">AI <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Q29sbGVnZSUyMEZvb3RiYWxs">College Football <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R29vZ2xlJTIwR2VtaW5p">Google Gemini <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TExNcw==">LLMs <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TkJB">NBA <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UHl0aG9u">Python <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Ug==">R <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U3BvcnRzJTIwQW5hbHl0aWNz">Sports Analytics <span class="quarto-category-count">(2)</span></div></div></div>
+    
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
 
+<p>If you pay any attention to tech news, you have likely heard quite a bit over the last year about Large Language Models (LLMs). LLMs are simply artificial intelligence models that are trained on large sets of human generated text (hence, the large language part of the name), can understand human input, and generate response content based on the human input.</p>
+<p>While some models like Chat-GPT require purchasing an API key to interact with model in a local environment, the Google Gemini model is free to interact with via API by simply requesting one through <a href="https://aistudio.google.com/apikey">Google’s AI Studio</a>.</p>
+<section id="getting-started" class="level2">
+<h2 class="anchored" data-anchor-id="getting-started">Getting Started</h2>
+<p>The first thing you’ll need to do in order to work with Google Gemini via their API is set up a <a href="https://cloud.google.com/?hl=en">Google Cloud Environment</a>. Simply click on “Get started for free” and follow the instructions to set up your account.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="google_cloud.png" class="img-fluid figure-img"></p>
+<figcaption>Google Cloud Homepage</figcaption>
+</figure>
+</div>
+<p>From there you will be taken to a project dashboard. You shouldn’t have to do anything from there - we just need a project available for our next step, which is generating an API key. Go to the <a href="https://aistudio.google.com/">Google AI Studio</a> to do this. You can interact with Gemini from here, but that doesn’t really fit our goal of trying to do things locally.</p>
+<p>Click on the “Get API Key” button in the top left of your screen to go to the API key section.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="ai_studio.png" class="img-fluid figure-img"></p>
+<figcaption>Google AI Studio Homepage</figcaption>
+</figure>
+</div>
+<p>Once you reach that page, click the “Create API Key button in the middle of the page, find your project, and select it. That will create a pop up with a string of random characters. Congratulations, you’ve created your API key!</p>
+<p>How you wish to use the API key is a matter of personal preference. The <a href="https://ai.google.dev/gemini-api/docs/quickstart?lang=python">documentation for Google AI</a> shows them just using the key directly in their script like so:</p>
+<div id="cell-2" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google <span class="im">import</span> genai</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> genai.Client(api_key<span class="op">=</span><span class="st">"YOUR_API_KEY"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> client.models.generate_content(</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span><span class="st">"gemini-2.0-flash"</span>, contents<span class="op">=</span><span class="st">"Explain how AI works"</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(response.text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>I personally prefer to place my API keys in my environment variables so that I can work with them across different projects. This next bit is specific to Windows users. Mac users can check out <a href="https://phoenixnap.com/kb/set-environment-variable-mac">this tutorial</a> to set their own environment variables.</p>
+<p>In your system search box, search for environment variables.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="system_search.png" class="img-fluid figure-img"></p>
+<figcaption>System search bar</figcaption>
+</figure>
+</div>
+<p>When you click on that, a dialog box will appear with options for user variables and system variables. These are just key/value pairs that your computer keeps on hand so you can call them from wherever you are working. You’ll want to click on the “New…” button under the user variables section. Another dialog box will appear for you to set the key and value for your variable. Choose a name that you will remember, and paste that key from Google into “Variable value:” text box. Click “OK” and you have now set up your API key as a user variable!</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="set_api_key.png" class="img-fluid figure-img"></p>
+<figcaption>Set user variables</figcaption>
+</figure>
+</div>
+<p>You are now ready to start coding and interacting with Google Gemini through their API!</p>
+</section>
+<section id="working-with-gemini-from-a-python-environment" class="level2">
+<h2 class="anchored" data-anchor-id="working-with-gemini-from-a-python-environment">Working with Gemini From a Python Environment</h2>
+<p>Setting up the API key is really the most difficult part of trying to work with the Gemini API. And, as we’ve just seen, even that isn’t too difficult!</p>
+<p>The first thing we’ll need to do to set up our environment to work with the Gemini API is make sure that we have the correct packages installed. We should just need one. Run the following command from your command prompt to install the google-genai package.</p>
+<div id="cell-4" class="cell" data-vscode="{&quot;languageId&quot;:&quot;powershell&quot;}">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>pip install <span class="op">-</span>q <span class="op">-</span>U google<span class="op">-</span>genai</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now you can start coding! I set up my loop to talk to Gemini like this:</p>
+<div id="cell-6" class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google <span class="im">import</span> genai</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace "GEMINI_API_KEY" with the name you gave your API key</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># in your user variables</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> genai.Client(api_key<span class="op">=</span>os.environ[<span class="st">"GEMINI_API_KEY"</span>]) </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Define function to talk to Gemini</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> talk_to_gemini(prompt):</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">""""</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">        prompt(str): The prompt to send to the model</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">        response(str): The response from the model</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> client.models.generate_content(</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        model<span class="op">=</span><span class="st">"gemini-2.0-flash"</span>, contents<span class="op">=</span>prompt,</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> response</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    user_input <span class="op">=</span> <span class="bu">input</span>(<span class="st">"You: "</span>)</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> user_input.lower() <span class="op">==</span> <span class="st">"exit"</span>:</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Goodbye!"</span>)</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"You: "</span> <span class="op">+</span> user_input)</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>        response <span class="op">=</span> talk_to_gemini(user_input)</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Gemini: "</span> <span class="op">+</span> response.text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let me explain what this is doing.</p>
+<p>I set up my API client object with the key/value pair that I set up in my user variables. I use “GEMINI_API_KEY” as the key for my API key value. Replace that with whatever you set for the name of your API key in your user variables. That client object is how Google knows that you are a valid person who is able to interact with their API.</p>
+<p>I then define a function that takes a prompt as an argument and returns the response from Gemini.</p>
+<p>Then I create a loop in which I ask for user input, call the function, and print the response from Gemini. I prefer to use a loop because, when interacting with a chatbot like Gemini, it doesn’t do me a ton of good to send one message and be done. I generally want to send multiple messages and have a conversation with the chatbot. I include a sentinel value “exit” so that when the user enters that word, the loop will exit and end the conversation.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>You have now set up a process to interact with the Google Gemini AI through their API! You can chat with it as you would with any other chatbot. Ask it questions, give it prompts, or enter into a debate!</p>
+<p>The process is really quite simple, as demonstrated here. Enjoy your new tool and utilize the power that comes from Large Language Models.</p>
 
 
+</section>
 
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="QUklMkNMTE1zJTJDR29vZ2xlJTIwR2VtaW5p" data-listing-date-sort="1741928400000" data-listing-file-modified-sort="1742058100191" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="797">
-<div class="thumbnail">
-<p><a href="./posts/how-to-work-with-gemini-api/how-to-work-with-gemini-api.html" class="no-external"></a></p><a href="./posts/how-to-work-with-gemini-api/how-to-work-with-gemini-api.html" class="no-external">
-<p class="card-img-top"><img src="posts\how-to-work-with-gemini-api\google_cloud.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/how-to-work-with-gemini-api/how-to-work-with-gemini-api.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/how-to-work-with-gemini-api/how-to-work-with-gemini-api.html" class="no-external">How To Work with Gemini API</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/how-to-work-with-gemini-api/how-to-work-with-gemini-api.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('QUk='); return false;">
-AI
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('TExNcw=='); return false;">
-LLMs
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R29vZ2xlJTIwR2VtaW5p'); return false;">
-Google Gemini
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/how-to-work-with-gemini-api/how-to-work-with-gemini-api.html" class="no-external">It’s time we took an honest look at who is hurt most by the transfer portal</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/how-to-work-with-gemini-api/how-to-work-with-gemini-api.html" class="no-external">
-<div class="listing-date">
-Mar 14, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="Q29sbGVnZSUyMEZvb3RiYWxsJTJDU3BvcnRzJTIwQW5hbHl0aWNz" data-listing-date-sort="1740981600000" data-listing-file-modified-sort="1741649045169" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1690">
-<div class="thumbnail">
-<p><a href="./posts/an-honest-conversation-about-the-transfer-portal/an-honest-conversation-about-the-transfer-portal.html" class="no-external"></a></p><a href="./posts/an-honest-conversation-about-the-transfer-portal/an-honest-conversation-about-the-transfer-portal.html" class="no-external">
-<p class="card-img-top"><img src="posts\an-honest-conversation-about-the-transfer-portal\an-honest-conversation-about-the-transfer-portal_files\figure-html\cell-10-output-2.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/an-honest-conversation-about-the-transfer-portal/an-honest-conversation-about-the-transfer-portal.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/an-honest-conversation-about-the-transfer-portal/an-honest-conversation-about-the-transfer-portal.html" class="no-external">An Honest Conversation About The Transfer Portal</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/an-honest-conversation-about-the-transfer-portal/an-honest-conversation-about-the-transfer-portal.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Q29sbGVnZSUyMEZvb3RiYWxs'); return false;">
-College Football
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('U3BvcnRzJTIwQW5hbHl0aWNz'); return false;">
-Sports Analytics
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/an-honest-conversation-about-the-transfer-portal/an-honest-conversation-about-the-transfer-portal.html" class="no-external">It’s time we took an honest look at who is hurt most by the transfer portal</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/an-honest-conversation-about-the-transfer-portal/an-honest-conversation-about-the-transfer-portal.html" class="no-external">
-<div class="listing-date">
-Mar 3, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="TkJBJTJDU3BvcnRzJTIwQW5hbHl0aWNz" data-listing-date-sort="1739426400000" data-listing-file-modified-sort="1740882839636" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1552">
-<div class="thumbnail">
-<p><a href="./posts/a-look-at-the-thunder-defense/a-look-at-the-thunder-defense.html" class="no-external"></a></p><a href="./posts/a-look-at-the-thunder-defense/a-look-at-the-thunder-defense.html" class="no-external">
-<p class="card-img-top"><img src="posts\a-look-at-the-thunder-defense\a-look-at-the-thunder-defense_files\figure-html\cell-5-output-1.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/a-look-at-the-thunder-defense/a-look-at-the-thunder-defense.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/a-look-at-the-thunder-defense/a-look-at-the-thunder-defense.html" class="no-external">A Look at the Thunder Defense</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/a-look-at-the-thunder-defense/a-look-at-the-thunder-defense.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('TkJB'); return false;">
-NBA
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('U3BvcnRzJTIwQW5hbHl0aWNz'); return false;">
-Sports Analytics
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/a-look-at-the-thunder-defense/a-look-at-the-thunder-defense.html" class="no-external">Looking at what makes the OKC Thunder successful on defenese</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/a-look-at-the-thunder-defense/a-look-at-the-thunder-defense.html" class="no-external">
-<div class="listing-date">
-Feb 13, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="UHl0aG9uJTJDUg==" data-listing-date-sort="1738389600000" data-listing-file-modified-sort="1740878559434" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1455">
-<div class="thumbnail">
-<p><a href="./posts/statsmodel-library/statsmodel-library.html" class="no-external"></a></p><a href="./posts/statsmodel-library/statsmodel-library.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/statsmodel-library/statsmodel-library.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/statsmodel-library/statsmodel-library.html" class="no-external">The statsmodel Python Library</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/statsmodel-library/statsmodel-library.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">
-Python
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">
-R
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/statsmodel-library/statsmodel-library.html" class="no-external">Comparing and contrasting the statsmodel library against standard R Language</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/statsmodel-library/statsmodel-library.html" class="no-external">
-<div class="listing-date">
-Feb 1, 2025
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
