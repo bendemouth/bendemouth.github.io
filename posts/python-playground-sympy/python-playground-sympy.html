@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2025-04-02">
+<meta name="description" content="Learning the SymPy library - A library for symbolic mathematics and a replacement for LaTeX">
 
-<title>bendemouth.github.io</title>
+<title>Python Playground - SymPy – bendemouth.github.io</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,27 +22,59 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-bf19b75f51ea680c8de03e84aa65eabd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-bf19b75f51ea680c8de03e84aa65eabd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -68,35 +102,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -128,17 +133,17 @@ window.Quarto = {
 };
 </script>
 
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">bendemouth.github.io</span>
     </a>
   </div>
@@ -149,7 +154,7 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
@@ -177,221 +182,150 @@ window.Quarto = {
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">bendemouth.github.io</h1>
-                      </div>
+    <div class="quarto-title column-body">
+      <h1 class="title">Python Playground - SymPy</h1>
+                  <div>
+        <div class="description">
+          Learning the SymPy library - A library for symbolic mathematics and a replacement for LaTeX
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Mathematics</div>
+                <div class="quarto-category">Python Playground</div>
+                <div class="quarto-category">Python</div>
+                <div class="quarto-category">LaTeX</div>
+              </div>
+                  </div>
   </div>
     
   
-  <div class="quarto-title-meta column-page-left">
+  <div class="quarto-title-meta">
 
       
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">April 2, 2025</p>
+      </div>
+    </div>
     
       
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(5)</span></div><div class="category" data-category="QUk=">AI <span class="quarto-category-count">(1)</span></div><div class="category" data-category="QVBJ">API <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Q29sbGVnZSUyMEZvb3RiYWxs">College Football <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R29vZ2xlJTIwR2VtaW5p">Google Gemini <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TExNcw==">LLMs <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TGFUZVg=">LaTeX <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TWF0aGVtYXRpY3M=">Mathematics <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TkJB">NBA <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UHl0aG9u">Python <span class="quarto-category-count">(2)</span></div><div class="category" data-category="UHl0aG9uJTIwUGxheWdyb3VuZA==">Python Playground <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Ug==">R <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U3BvcnRzJTIwQW5hbHl0aWNz">Sports Analytics <span class="quarto-category-count">(2)</span></div></div></div>
+    
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
 
+<blockquote class="blockquote">
+<p>“I threw down my enemy, and he fell from the high place and broke the mountain-side where he smote it in his ruin. Then darkness took me, and I strayed out of thought and time, and I wandered far on roads that I will not tell.”</p>
+</blockquote>
+<p>Gandalf the White made this quote famous. Lesser known is my use of it each time I finish using LaTeX. Backslashes, starting and ending sections and equations, curly brackets - by the time I’ve finished writing out my own equations I can hardly read them, let alone solve them. I do not believe that <code>x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}</code> is the best way to write out a formula. I’m a working in Python, let me write in Python.</p>
+<p>Then I learned about <a href="https://docs.sympy.org/latest/index.html">SymPy</a>.</p>
+<p>SymPy is a library for use in symbolic mathematics and has built in functionality to work with those formulas. Unlike LaTeX, where the formula is static, SymPy allows you to both write out your formulas using mathematical symbols and solve them using those same formulas.</p>
+<p>Their <a href="https://docs.sympy.org/latest/reference/index.html">API Reference</a> has tutorials on working with physics, calculus, and tensors, which is particularly useful for machine learning. I’ll be keeping it a bit simpler for this example. I’m just looking to get my feet wet with this library.</p>
+<section id="rpi-example" class="level2">
+<h2 class="anchored" data-anchor-id="rpi-example">RPI Example</h2>
+<p>Over the last year I’ve had the privilege of working as the Project Data Lead for the Alabama Association of Basketball Coaches project to revamp high school basketball playoffs in the state. Part of that is building on the RPI formula which accounts for team win percentage, opponents’ win percentage, and opponents’ opponents’ win percentage. As such, I’ve written the formulas for RPI, win adjustments, and loss adjustments in LaTeX countless times, but need to separately solve the formulas in Python or R, depending on which language I am writing in. I want to see what it looks like if I use SymPy instead.</p>
+<section id="winloss-adjustments" class="level3">
+<h3 class="anchored" data-anchor-id="winloss-adjustments">Win/Loss Adjustments</h3>
+<p>The formula for adjusted wins and losses are as follows:</p>
+<p><span class="math display">\[\text{Adj. Win} = 1 + \frac{\text{Opp. RPI}}{2}\]</span> <span class="math display">\[\text{Adj. Loss} = 1 - \frac{\text{Opp. RPI}}{2}\]</span></p>
+<p>I want to see what a win and loss against the number one team in the state would look like. That team is Hoover High School, who ended the season with an RPI of 0.8401.</p>
+<div id="cell-2" class="cell" data-execution_count="40">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy <span class="im">import</span> symbols, solve</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up symbols to work with</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># You can use any symbols you like. They are separated by spaces or commas.</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Spaces appear to be the standard based on the Sympy documentation.</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># adjw = Adjusted Win</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># adjl = Adjusted Loss</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># orpi = Opponent RPI</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>adjw, adjl, orpi <span class="op">=</span> symbols(<span class="st">'adjw adjl orpi'</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an expression for the adj. win formula</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>win_expr <span class="op">=</span> <span class="dv">1</span> <span class="op">+</span> (orpi <span class="op">/</span> <span class="dv">2</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(win_expr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>orpi/2 + 1</code></pre>
+</div>
+</div>
+<p>Something I learned I realized when playing around in that code cell is how I actually need to build expressions and formulas. I can’t just do <code>adjw = 1 + (orpi / 2)</code> because <code>adjw</code> is already set to an <code>Symbol</code> object. I also cannot immediately use the <code>solve()</code>. The arguments for the solve function assumes that the expression is equal to 0, which our expression is not.</p>
+<p>Instead what we need to do is give the <code>orpi</code> object a numeric value using the <code>subs()</code> method, like so:</p>
+<div id="cell-4" class="cell" data-execution_count="41">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>win_expr.subs(orpi, <span class="fl">0.8401</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="41">
+<p><span class="math inline">\(\displaystyle 1.42005\)</span></p>
+</div>
+</div>
+<p>A quick tangent because this caught me off guard. I had assumed using the <code>subs()</code> method would just give a value to the <code>orpi</code> object and then I would need to create an <code>Eq</code> object to set <code>win_expr</code> equal to <code>adjw</code>.</p>
+<p>Instead, the <code>subs()</code> method solves the equation, subbing in the value given. The syntax is:</p>
+<p><code>object.subs(variable, value to give variable)</code></p>
+<p>There is also an <code>Eq</code> object that allows you to create symbolic equalities. That is what I thought I would need to use, but I learned that <code>Eq</code> is for building formulas, not solving for them.</p>
+<div id="cell-6" class="cell" data-execution_count="42">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy <span class="im">import</span> Eq</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>Eq(orpi,<span class="fl">.8401</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="42">
+<p><span class="math inline">\(\displaystyle orpi = 0.8401\)</span></p>
+</div>
+</div>
+<p>As you can see, the <code>Eq</code> object doesn’t really give me what I am looking for. That just makes the output look nice, <strong>it does not actually give a value to <code>orpi</code></strong>.</p>
+<p>But, that means if I wanted to write out the formula it looks nice, like I might need out of LaTeX I could do something like this:</p>
+<div id="cell-8" class="cell" data-execution_count="43">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Eq(win_expr, adjw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="43">
+<p><span class="math inline">\(\displaystyle \frac{orpi}{2} + 1 = adjw\)</span></p>
+</div>
+</div>
+<p>But, because symbols can be anything that I want, I would make my symbols be what I want to display. Applying what I’ve learned in the cells above, a better example would be something like this:</p>
+<div id="cell-10" class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy <span class="im">import</span> pprint</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create 'symbols' with full names</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>adjw, adjl, orpi <span class="op">=</span> symbols(<span class="st">'Adj.Win Adj.Loss OppRPI'</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Expression for adjusted wins formula</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>w_expr <span class="op">=</span> <span class="dv">1</span> <span class="op">+</span> (orpi <span class="op">/</span> <span class="dv">2</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up an Eq object that will print the full formula</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>win_formula <span class="op">=</span> Eq(adjw, w_expr)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>pprint(win_formula, use_unicode<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Use subs to solve the equation</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>pprint(win_formula.subs(orpi, <span class="fl">0.8401</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          OppRPI    
+Adj.Win = ────── + 1
+            2       
+Adj.Win = 1.42005</code></pre>
+</div>
+</div>
+<p>One thing you’ll notice is that I used <code>pprint()</code> instead of <code>print()</code>. <strong>This is not the same <code>pprint()</code> that is often used with JSON objects</strong>.</p>
+<p>SymPy has <a href="https://docs.sympy.org/latest/modules/printing.html">multiple printing classes</a>, one of which is <code>sympy.printing.pretty.pretty.pretty</code>. I promise you that is not a typo. <code>pprint</code> is a shortcut to import that class.</p>
+<p>I figured this out because simply doing <code>print(expression)</code> does not actually output what you want. In the cells above, I just called the objects not in a <code>print()</code> method. Calling the objects at the end of your cell <em>will</em> give you what you want, but if you need to output multiple objects, doing <code>print(expression)</code> just outputs the class object, not the information you want. This is a longwinded explanation letting you know that <code>pprint()</code> is what you really want.</p>
+<p>There are other printing classes you can use as well. An interesting bit that I found is that you can actually output the LaTeX code for your expressions creating an object of the <code>LatexPrinter</code> class and then calling the <code>doprint(expression)</code> method. This is certainly a useful hack when needing to write out long formulas.</p>
+</section>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>I really enjoyed getting my hands dirty and playing around in this library. If you have beef with LaTeX like I do, I highly encourage you to check this out and play around on your own. I learned quite a bit through trial and error, and after reading through the documentation on this, it seems incredibly powerful. Its applications extend far beyond what I covered in this post. I do plan on using this in the future for when I am writing research papers.</p>
+<p>I will be interested to see how it looks in a final format. For example, I often use LaTeX in an R Markdown file and then use Knitr to get a PDF output. LaTeX looks really nice in that. I hope that SymPy works just as well, because I already feel I have a better grasp of this library than I do with LaTeX. I suppose I will find out when I hit the publish button on this post!</p>
 
 
+</section>
 
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="TWF0aGVtYXRpY3MlMkNQeXRob24lMjBQbGF5Z3JvdW5kJTJDUHl0aG9uJTJDTGFUZVg=" data-listing-date-sort="1743570000000" data-listing-file-modified-sort="1743625968267" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="991">
-<div class="thumbnail">
-<p><a href="./posts/python-playground-sympy/python-playground-sympy.html" class="no-external"></a></p><a href="./posts/python-playground-sympy/python-playground-sympy.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/python-playground-sympy/python-playground-sympy.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/python-playground-sympy/python-playground-sympy.html" class="no-external">Python Playground - SymPy</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/python-playground-sympy/python-playground-sympy.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('TWF0aGVtYXRpY3M='); return false;">
-Mathematics
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9uJTIwUGxheWdyb3VuZA=='); return false;">
-Python Playground
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">
-Python
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('TGFUZVg='); return false;">
-LaTeX
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/python-playground-sympy/python-playground-sympy.html" class="no-external">Learning the SymPy library - A library for symbolic mathematics and a replacement for LaTeX</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/python-playground-sympy/python-playground-sympy.html" class="no-external">
-<div class="listing-date">
-Apr 2, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="QUklMkNMTE1zJTJDR29vZ2xlJTIwR2VtaW5pJTJDQVBJ" data-listing-date-sort="1741928400000" data-listing-file-modified-sort="1742254856636" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="797">
-<div class="thumbnail">
-<p><a href="./posts/how-to-work-with-gemini-api/how-to-work-with-gemini-api.html" class="no-external"></a></p><a href="./posts/how-to-work-with-gemini-api/how-to-work-with-gemini-api.html" class="no-external">
-<p class="card-img-top"><img src="posts\how-to-work-with-gemini-api\google_cloud.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/how-to-work-with-gemini-api/how-to-work-with-gemini-api.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/how-to-work-with-gemini-api/how-to-work-with-gemini-api.html" class="no-external">How To Work with Gemini API</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/how-to-work-with-gemini-api/how-to-work-with-gemini-api.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('QUk='); return false;">
-AI
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('TExNcw=='); return false;">
-LLMs
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R29vZ2xlJTIwR2VtaW5p'); return false;">
-Google Gemini
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('QVBJ'); return false;">
-API
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/how-to-work-with-gemini-api/how-to-work-with-gemini-api.html" class="no-external">Work with a Large Language Model in a Local Environment</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/how-to-work-with-gemini-api/how-to-work-with-gemini-api.html" class="no-external">
-<div class="listing-date">
-Mar 14, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="Q29sbGVnZSUyMEZvb3RiYWxsJTJDU3BvcnRzJTIwQW5hbHl0aWNz" data-listing-date-sort="1740981600000" data-listing-file-modified-sort="1741649045169" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1690">
-<div class="thumbnail">
-<p><a href="./posts/an-honest-conversation-about-the-transfer-portal/an-honest-conversation-about-the-transfer-portal.html" class="no-external"></a></p><a href="./posts/an-honest-conversation-about-the-transfer-portal/an-honest-conversation-about-the-transfer-portal.html" class="no-external">
-<p class="card-img-top"><img src="posts\an-honest-conversation-about-the-transfer-portal\an-honest-conversation-about-the-transfer-portal_files\figure-html\cell-10-output-2.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/an-honest-conversation-about-the-transfer-portal/an-honest-conversation-about-the-transfer-portal.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/an-honest-conversation-about-the-transfer-portal/an-honest-conversation-about-the-transfer-portal.html" class="no-external">An Honest Conversation About The Transfer Portal</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/an-honest-conversation-about-the-transfer-portal/an-honest-conversation-about-the-transfer-portal.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Q29sbGVnZSUyMEZvb3RiYWxs'); return false;">
-College Football
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('U3BvcnRzJTIwQW5hbHl0aWNz'); return false;">
-Sports Analytics
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/an-honest-conversation-about-the-transfer-portal/an-honest-conversation-about-the-transfer-portal.html" class="no-external">It’s time we took an honest look at who is hurt most by the transfer portal</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/an-honest-conversation-about-the-transfer-portal/an-honest-conversation-about-the-transfer-portal.html" class="no-external">
-<div class="listing-date">
-Mar 3, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="TkJBJTJDU3BvcnRzJTIwQW5hbHl0aWNz" data-listing-date-sort="1739426400000" data-listing-file-modified-sort="1740882839636" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1552">
-<div class="thumbnail">
-<p><a href="./posts/a-look-at-the-thunder-defense/a-look-at-the-thunder-defense.html" class="no-external"></a></p><a href="./posts/a-look-at-the-thunder-defense/a-look-at-the-thunder-defense.html" class="no-external">
-<p class="card-img-top"><img src="posts\a-look-at-the-thunder-defense\a-look-at-the-thunder-defense_files\figure-html\cell-5-output-1.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/a-look-at-the-thunder-defense/a-look-at-the-thunder-defense.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/a-look-at-the-thunder-defense/a-look-at-the-thunder-defense.html" class="no-external">A Look at the Thunder Defense</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/a-look-at-the-thunder-defense/a-look-at-the-thunder-defense.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('TkJB'); return false;">
-NBA
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('U3BvcnRzJTIwQW5hbHl0aWNz'); return false;">
-Sports Analytics
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/a-look-at-the-thunder-defense/a-look-at-the-thunder-defense.html" class="no-external">Looking at what makes the OKC Thunder successful on defenese</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/a-look-at-the-thunder-defense/a-look-at-the-thunder-defense.html" class="no-external">
-<div class="listing-date">
-Feb 13, 2025
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="UHl0aG9uJTJDUg==" data-listing-date-sort="1738389600000" data-listing-file-modified-sort="1740878559434" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1455">
-<div class="thumbnail">
-<p><a href="./posts/statsmodel-library/statsmodel-library.html" class="no-external"></a></p><a href="./posts/statsmodel-library/statsmodel-library.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/statsmodel-library/statsmodel-library.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/statsmodel-library/statsmodel-library.html" class="no-external">The statsmodel Python Library</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/statsmodel-library/statsmodel-library.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">
-Python
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">
-R
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/statsmodel-library/statsmodel-library.html" class="no-external">Comparing and contrasting the statsmodel library against standard R Language</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/statsmodel-library/statsmodel-library.html" class="no-external">
-<div class="listing-date">
-Feb 1, 2025
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
